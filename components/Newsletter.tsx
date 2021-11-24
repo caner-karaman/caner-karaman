@@ -11,6 +11,7 @@ const Wrapper = styled.div`
   background-color: #EEBF63;
   align-items: center;
   border-radius: 25px;
+  margin-bottom: 30px;
 `
 
 const Title = styled.h1`

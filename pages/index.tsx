@@ -5,6 +5,7 @@ import Promotion from '../components/Promotion';
 import CountSection from '../components/CountSection';
 import RecentProjects from '../components/RecentProjects';
 import NewsLetter from '../components/Newsletter';
+import Footer from '../components/Footer';
 
 const Home: NextPage = () => {
   return (
@@ -50,6 +51,7 @@ const Home: NextPage = () => {
         <CountSection></CountSection>
         <RecentProjects></RecentProjects>
         <NewsLetter />
+        <Footer />
       </main>
     </div>
   )
