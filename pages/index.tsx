@@ -4,6 +4,7 @@ import Header from "../components/Header";
 import Promotion from '../components/Promotion';
 import CountSection from '../components/CountSection';
 import RecentProjects from '../components/RecentProjects';
+import NewsLetter from '../components/Newsletter';
 
 const Home: NextPage = () => {
   return (
@@ -48,6 +49,7 @@ const Home: NextPage = () => {
         <Promotion></Promotion>
         <CountSection></CountSection>
         <RecentProjects></RecentProjects>
+        <NewsLetter />
       </main>
     </div>
   )
