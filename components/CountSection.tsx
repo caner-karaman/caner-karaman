@@ -63,7 +63,7 @@ const CountSection = () => {
         </Header>
         <main>
           <Heading>Glad to Help You!</Heading>
-          <Text>As a "Full-Stack developer", Having a passion for developing mobile and web applications for startup companies. Taking care of the customer closely and offer solutions that cover their problems.</Text>
+          <Text>As a &quot;Full-Stack developer&quot;, Having a passion for developing mobile and web applications for startup companies. Taking care of the customer closely and offer solutions that cover their problems.</Text>
         </main>
       </Wrapper>
     </Container>

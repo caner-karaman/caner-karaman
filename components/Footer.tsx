@@ -21,7 +21,7 @@ const Footer = () => {
     <StyledFooter>
       <Container>
         <FooterContent>
-          <Title>Let's Connect</Title>
+          <Title>Let&apos;s Connect</Title>
         </FooterContent>
       </Container>
     </StyledFooter>
