@@ -2,6 +2,7 @@ import type { NextPage } from 'next'
 import Head from 'next/head'
 import Header from "../components/Header";
 import Promotion from '../components/Promotion';
+import CountSection from '../components/CountSection';
 
 const Home: NextPage = () => {
   return (
@@ -44,6 +45,7 @@ const Home: NextPage = () => {
       <Header />
       <main>
         <Promotion></Promotion>
+        <CountSection></CountSection>
       </main>
     </div>
   )

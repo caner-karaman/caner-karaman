@@ -5,7 +5,6 @@ import Container from './Container';
 const StyledHeader = styled.header`
   display: flex;
   height: 100px;
-  position: fixed;
 
   align-items: center;
   justify-content: space-between;
@@ -19,12 +18,20 @@ const Logo = styled.h1`
 
 const Menu = styled.ul`
   display: flex;
-
 `
 
 const MenuItem = styled.li`
   margin: 0 20px;
   list-style: none;
+`
+
+const Wrapper = styled.header`
+  position: fixed;
+  background-color: #f1f1f1;
+  width: 100%;
+  -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
+  -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
+  box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
 `
 
 interface MenuItemTextProps {
@@ -45,25 +52,27 @@ const MenuItemText = styled.a<MenuItemTextProps>`
 
 const Header = () => {
   return (
-    <Container>
-      <StyledHeader>
-        <Logo>Caner Karaman</Logo>
-        <Menu>
-          <MenuItem>
-            <MenuItemText isActive href="/">Home</MenuItemText>
-          </MenuItem>
-          <MenuItem>
-            <MenuItemText href="/about">About</MenuItemText>
-          </MenuItem>
-          <MenuItem>
-            <MenuItemText href="/project">Project</MenuItemText>
-          </MenuItem>
-          <MenuItem>
-            <MenuItemText href="/contact">Contact</MenuItemText>
-          </MenuItem>
-        </Menu>
-      </StyledHeader>
-    </Container>
+    <Wrapper>
+      <Container>
+        <StyledHeader>
+          <Logo>Caner Karaman</Logo>
+          <Menu>
+            <MenuItem>
+              <MenuItemText isActive href="/">Home</MenuItemText>
+            </MenuItem>
+            <MenuItem>
+              <MenuItemText href="/about">About</MenuItemText>
+            </MenuItem>
+            <MenuItem>
+              <MenuItemText href="/project">Project</MenuItemText>
+            </MenuItem>
+            <MenuItem>
+              <MenuItemText href="/contact">Contact</MenuItemText>
+            </MenuItem>
+          </Menu>
+        </StyledHeader>
+      </Container>
+    </Wrapper>
   )
 }
 
