@@ -63,7 +63,7 @@ const CountSection = () => {
         </Header>
         <main>
           <Heading>Glad to Help You!</Heading>
-          <Text>As a full-service digital designer, I work closely with my clients to define, design and develop transformative user experiences across all platforms and brand’s touchpoints.</Text>
+          <Text>As a "Full-Stack developer", Having a passion for developing mobile and web applications for startup companies. Taking care of the customer closely and offer solutions that cover their problems.</Text>
         </main>
       </Wrapper>
     </Container>

@@ -21,6 +21,7 @@ const Projects = styled.div`
 `
 
 const ProjectItem = styled.div`
+  position: relative;
   &:first-child{
     padding-right: 30px;
   }
@@ -44,10 +45,21 @@ const ProjectTitle = styled.h4`
 const Link = styled.a`
   color: #151517;
   display: inline-block;
+  text-decoration: underline;
 
   &:first-child{
     margin-right: 50px;
   }
+`
+
+const Overlay = styled.div`
+  background-color: rgba(0,0,0,0.3);
+  position: absolute;
+  height: 598px;
+  width: 100%;
+  top: 0;
+  border-radius: 25px;
+
 `
 
 const RecentProjects: FC = () => {
@@ -57,23 +69,29 @@ const RecentProjects: FC = () => {
         <Container>
           <HeaderContent>
             <SectionTitle>Recent Projects</SectionTitle>
-            <Button>View More</Button>
+            <Button onClick={() => window.open('/projects',"_self")}>View More</Button>
           </HeaderContent>
           <Projects>
             <ProjectItem>
-              <StyledImage width="540" height="756" src="/images/cat.jpg" alt="Break line for heading to description" />
-              <ProjectTitle>UI Portfolio</ProjectTitle>
+              <div style={{position: 'relative'}}>
+                <StyledImage width="540" height="598" src="/images/fiba_bg.jpg" alt="Break line for heading to description" />
+                <Overlay />
+              </div>
+              <ProjectTitle>Fibabanka Mobile | Internet Banking</ProjectTitle>
               <div>
-                <Link href="/">View Study Case</Link>
-                <Link href="/">Live Preview</Link>
+                {/* <Link href="/">View Study Case</Link> */}
+                <Link target="_blank" href="https://internetbankaciligi.fibabanka.com.tr/">Live Preview</Link>
               </div>
             </ProjectItem>
             <ProjectItem>
-              <StyledImage width="540" height="756" src="/images/cat.jpg" alt="Break line for heading to description" />
-              <ProjectTitle>UI Portfolio</ProjectTitle>
+              <div style={{position: 'relative'}}>
+                <StyledImage width="540" height="598" src="/images/anadolubank.jpg" alt="Break line for heading to description" />
+                <Overlay />
+              </div>
+              <ProjectTitle>Anadolubank Internet Banking</ProjectTitle>
               <div>
-                <Link href="/">View Study Case</Link>
-                <Link href="/">Live Preview</Link>
+                {/* <Link href="/">View Study Case</Link> */}
+                <Link target="_blank" href="https://isube.anadolubank.com.tr/ibank/?loginPage=b">Live Preview</Link>
               </div>
             </ProjectItem>
           </Projects>

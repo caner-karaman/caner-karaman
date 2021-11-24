@@ -4,7 +4,6 @@ import Container from './Container';
 
 const StyledFooter = styled.footer`
   background-color:   #486074;
-;
 `
 
 const FooterContent = styled.div`

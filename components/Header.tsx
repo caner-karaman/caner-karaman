@@ -61,7 +61,7 @@ const Header = () => {
             <MenuItem>
               <MenuItemText isActive href="/">Home</MenuItemText>
             </MenuItem>
-            <MenuItem>
+            {/* <MenuItem>
               <MenuItemText href="/about">About</MenuItemText>
             </MenuItem>
             <MenuItem>
@@ -69,7 +69,7 @@ const Header = () => {
             </MenuItem>
             <MenuItem>
               <MenuItemText href="/contact">Contact</MenuItemText>
-            </MenuItem>
+            </MenuItem> */}
           </Menu>
         </StyledHeader>
       </Container>

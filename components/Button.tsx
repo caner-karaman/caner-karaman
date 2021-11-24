@@ -7,6 +7,7 @@ interface ButtonStyleProps {
 
 interface ButtonProps extends ButtonStyleProps{
   className?: string;
+  onClick?(): void;
 }
 
 const StyledButton = styled.button<ButtonStyleProps>`
@@ -20,9 +21,9 @@ const StyledButton = styled.button<ButtonStyleProps>`
   cursor: pointer;
 `
 
-const Button: FC<ButtonProps> = ({children, buttonTypes='primary', className}) => {
+const Button: FC<ButtonProps> = ({children, buttonTypes='primary', className, onClick}) => {
   return(
-    <StyledButton buttonTypes={buttonTypes} className={className}>
+    <StyledButton onClick={onClick} buttonTypes={buttonTypes} className={className}>
       {children}
     </StyledButton>
   )

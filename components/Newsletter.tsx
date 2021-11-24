@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import Button from './Button';
 import Container from './Container';
 
+const MAIL_ADRESS = "karamancaner1995@gmail.com";
 const Wrapper = styled.div`
   height: 315px;
   display: flex;
@@ -39,8 +40,8 @@ const NewsLetter = () => {
         <Wrapper>
           <Title>Interested<br/>working<br/>with me?</Title>
           <div>
-            <StyledButton buttonTypes="secondary">Email Me</StyledButton>
-            <TernararyButton>See More Projects</TernararyButton>
+            <StyledButton onClick={() => window.open(`mailto:${MAIL_ADRESS}`)} buttonTypes="secondary">Email Me</StyledButton>
+            <TernararyButton onClick={() => window.open('/projects',"_self")}>See More Projects</TernararyButton>
           </div>
         </Wrapper>
       </Container>
