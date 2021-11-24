@@ -27,6 +27,7 @@ const MenuItem = styled.li`
 
 const Wrapper = styled.header`
   position: fixed;
+  z-index: 999;
   background-color: #f1f1f1;
   width: 100%;
   -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);

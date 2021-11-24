@@ -59,7 +59,7 @@ const Promotion: FC = () => {
             <Heading4>Hey!</Heading4>
             <Heading1>I’m <YellowLabel>Caner Karaman.</YellowLabel><br/>Frontend Developer.</Heading1>
             <div style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 60}}> 
-              <Image width="324" height="19" src="/images/icons/LineBlue.svg" alt="Break line for heading to description" />
+              <Image width="424" height="24" src="/images/icons/LineBlue.svg" alt="Break line for heading to description" />
             </div>
             <Description>
               UX Designer based in Jakarta, Indonesia. <br/>

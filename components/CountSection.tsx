@@ -6,6 +6,7 @@ const Wrapper = styled.div`
   border-radius: 45px;
   background-color: #E9E9E9;
   padding: 65px;
+  margin-bottom: 60px;
 `;
 
 const Header = styled.header`
