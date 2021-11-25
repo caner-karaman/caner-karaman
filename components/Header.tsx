@@ -61,9 +61,10 @@ const Header = () => {
             <MenuItem>
               <MenuItemText isActive href="/">Home</MenuItemText>
             </MenuItem>
-            {/* <MenuItem>
-              <MenuItemText href="/about">About</MenuItemText>
+            <MenuItem>
+              <MenuItemText href="/blogs">Blog</MenuItemText>
             </MenuItem>
+            {/* 
             <MenuItem>
               <MenuItemText href="/project">Project</MenuItemText>
             </MenuItem>
