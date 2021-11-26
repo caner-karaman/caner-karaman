@@ -17,10 +17,11 @@ const StyledPromotion = styled.div`
 
   ${breakpoints.device.xl}{
     padding-top: 110px;
-    height: auto;
     margin-bottom: 35px;
   }
-
+  ${breakpoints.device.lg}{
+    height: auto;
+  }
   ${breakpoints.device.sm}{
     padding-top: 75px;
   }
