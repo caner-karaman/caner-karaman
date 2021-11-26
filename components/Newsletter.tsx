@@ -41,7 +41,7 @@ const NewsLetter = () => {
           <Title>Interested<br/>working<br/>with me?</Title>
           <div>
             <StyledButton onClick={() => window.open(`mailto:${MAIL_ADRESS}`)} buttonTypes="secondary">Email Me</StyledButton>
-            <TernararyButton onClick={() => window.open('/projects',"_self")}>See More Projects</TernararyButton>
+            <TernararyButton href="/projects">See More Projects</TernararyButton>
           </div>
         </Wrapper>
       </Container>

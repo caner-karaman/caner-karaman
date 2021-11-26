@@ -69,7 +69,7 @@ const RecentProjects: FC = () => {
         <Container>
           <HeaderContent>
             <SectionTitle>Recent Projects</SectionTitle>
-            <Button onClick={() => window.open('/projects',"_self")}>View More</Button>
+            <Button href="/projects">View More</Button>
           </HeaderContent>
           <Projects>
             <ProjectItem>

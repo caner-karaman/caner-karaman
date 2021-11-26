@@ -1,5 +1,6 @@
 import React, { FC } from 'react'
 import styled from "styled-components";
+import Link from 'next/link';
 
 interface ButtonStyleProps {
   buttonTypes?: 'primary' | 'secondary'
@@ -8,6 +9,7 @@ interface ButtonStyleProps {
 interface ButtonProps extends ButtonStyleProps{
   className?: string;
   onClick?(): void;
+  href?: string;
 }
 
 const StyledButton = styled.button<ButtonStyleProps>`
@@ -21,11 +23,22 @@ const StyledButton = styled.button<ButtonStyleProps>`
   cursor: pointer;
 `
 
-const Button: FC<ButtonProps> = ({children, buttonTypes='primary', className, onClick}) => {
+const Button: FC<ButtonProps> = ({children, buttonTypes='primary', className, onClick, href}) => {
   return(
-    <StyledButton onClick={onClick} buttonTypes={buttonTypes} className={className}>
-      {children}
-    </StyledButton>
+    <>
+    {!!href ? (
+      <Link href={href}>
+        <StyledButton onClick={onClick} buttonTypes={buttonTypes} className={className}>
+          {children}
+        </StyledButton>
+      </Link>
+    ) : 
+      (
+      <StyledButton onClick={onClick} buttonTypes={buttonTypes} className={className}>
+        {children}
+      </StyledButton>
+    )}
+    </>
   )
 }
 
