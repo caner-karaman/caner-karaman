@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import styled from "styled-components";
 import Container from './Container';
 
@@ -51,7 +51,11 @@ const MenuItemText = styled.a<MenuItemTextProps>`
   }
 `
 
-const Header = () => {
+interface HeaderProps{
+  path: 'home' | 'blogs' | 'projects' | 'contact';
+}
+
+const Header: FC<HeaderProps> = ({path}) => {
   return (
     <Wrapper>
       <Container>
@@ -59,10 +63,10 @@ const Header = () => {
           <Logo>Caner Karaman</Logo>
           <Menu>
             <MenuItem>
-              <MenuItemText isActive href="/">Home</MenuItemText>
+              <MenuItemText isActive={path === 'home'} href="/">Home</MenuItemText>
             </MenuItem>
             <MenuItem>
-              <MenuItemText href="/blogs">Blog</MenuItemText>
+              <MenuItemText isActive={path === 'blogs'} href="/blogs">Blog</MenuItemText>
             </MenuItem>
             {/* 
             <MenuItem>
