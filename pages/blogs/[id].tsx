@@ -1,4 +1,4 @@
-import { NextPage } from "next";
+import { GetStaticProps, NextPage } from "next";
 import Head from "next/head";
 import Container from "../../components/Container";
 import { getAllPostIds, getPostData } from '../../lib/posts'
@@ -54,7 +54,14 @@ export async function getStaticPaths() {
   }
 }
 
-export async function getStaticProps({ params }) {
+interface IParams {
+  id: string;
+}
+interface Props {
+  params: IParams;
+}
+
+export async function getStaticProps({ params }: Props) {
   const postData = await getPostData(params.id)
   return {
     props: {
