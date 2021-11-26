@@ -164,3 +164,18 @@ p {
   line-height: 30px;
   letter-spacing: 0.13em;
 }
+
+.blog p {
+  margin-bottom: 10px;
+  letter-spacing: 0.11em;
+}
+
+.blog ul li{
+  font-size: 18px;
+  line-height: 30px;
+  letter-spacing: 0.11em;
+}
+
+.blog ul li:last-child{
+  margin-bottom: 10px;
+}
