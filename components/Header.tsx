@@ -1,5 +1,6 @@
 import React, { FC } from 'react';
 import styled from "styled-components";
+import breakpoints from '../common/breakpoints';
 import Container from './Container';
 
 const StyledHeader = styled.header`
@@ -8,6 +9,14 @@ const StyledHeader = styled.header`
 
   align-items: center;
   justify-content: space-between;
+
+  ${breakpoints.device.xl}{
+    height: 80px;
+  }
+
+  ${breakpoints.device.sm}{
+    height: 60px;
+  }
 `
 
 const Logo = styled.h1`
@@ -18,6 +27,10 @@ const Logo = styled.h1`
 
 const Menu = styled.ul`
   display: flex;
+
+  ${breakpoints.device.sm}{
+    display: none;
+  }
 `
 
 const MenuItem = styled.li`

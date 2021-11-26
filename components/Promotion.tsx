@@ -3,6 +3,7 @@ import styled from "styled-components";
 import Container from './Container';
 import Image from 'next/image'
 import Button from './Button';
+import breakpoints from '../common/breakpoints';
 
 const CV_LINK = "https://drive.google.com/file/d/1JtJGhwSjlA18vKO7FX4G7bXVzCxaumxk/view?usp=sharing";
 const MAIL_ADRESS = "karamancaner1995@gmail.com";
@@ -13,6 +14,16 @@ const StyledPromotion = styled.div`
   justify-content: space-between;
   padding-top: 177px;
   height: 100vh;
+
+  ${breakpoints.device.xl}{
+    padding-top: 110px;
+    height: auto;
+    margin-bottom: 35px;
+  }
+
+  ${breakpoints.device.sm}{
+    padding-top: 75px;
+  }
 `;
 
 const Left = styled.div`
@@ -20,10 +31,19 @@ const Left = styled.div`
 `
 const Right = styled.div`
   flex: 1;
+  ${breakpoints.device.lg}{
+    display: none;
+  }
 `
 const Heading4 = styled.h4`
   color: #828282;
   margin-bottom: 16px;
+  ${breakpoints.device.xl}{
+    margin-bottom: 12px;
+  }
+  ${breakpoints.device.sm}{
+    margin-bottom: 0;
+  }
 `
 const Heading1 = styled.h1`
   color: #2f2f2f;
@@ -37,6 +57,15 @@ const YellowLabel = styled.span`
 const Description = styled.p`
   margin-bottom: 30px;
   margin-top: 15px;
+
+  ${breakpoints.device.lg}{
+    margin-bottom: 25px;
+    width: 65%;
+  }
+
+  ${breakpoints.device.sm}{
+    width: auto;
+  }
 `
 
 const SocialMedia = styled.ul`
@@ -60,6 +89,29 @@ const FirstButton = styled(Button)`
   margin-right: 30px;
 `
 
+const ImageWrapper = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 60px;
+
+  ${breakpoints.device.xl}{
+    justify-content: flex-start;
+  }
+  ${breakpoints.device.sm}{
+    display: none;
+  }
+`
+
+const SocialMediaWrapper = styled.div`
+  display: flex; 
+  margin-bottom: 44px;
+  align-items: center;
+
+  ${breakpoints.device.xl}{
+    margin-bottom: 24px;
+  }
+`
+
 const Promotion: FC = () => {
   return(
     <section>
@@ -68,14 +120,14 @@ const Promotion: FC = () => {
           <Left>
             <Heading4>Hey!</Heading4>
             <Heading1>I’m <YellowLabel>Caner Karaman.</YellowLabel><br/>Frontend Developer.</Heading1>
-            <div style={{display: 'flex', justifyContent: 'flex-end', paddingRight: 60}}> 
+            <ImageWrapper>
               <Image width="424" height="24" src="/images/icons/LineBlue.svg" alt="Break line for heading to description" />
-            </div>
+            </ImageWrapper>
             <Description>
               Software Engineer based in Istanbul, Turkey.<br/>
               I am developing mobile, web application with React | React Native
             </Description>
-            <div style={{display: 'flex', marginBottom: 44}}>
+            <SocialMediaWrapper>
               <FollowText>Follow me</FollowText>
               <SocialMedia>
                 <SocialMediaItem>
@@ -94,7 +146,7 @@ const Promotion: FC = () => {
                   </SocialMediaLink>
                 </SocialMediaItem>
               </SocialMedia>
-            </div>
+            </SocialMediaWrapper>
             <FirstButton onClick={() => window.open(`mailto:${MAIL_ADRESS}`)}>Mail Me</FirstButton>
             <Button onClick={() => window.open(CV_LINK,'_newtab')}  buttonTypes="secondary">Download CV</Button>
           </Left>
