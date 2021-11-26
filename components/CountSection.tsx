@@ -20,6 +20,7 @@ const Wrapper = styled.div`
     border-radius: 12px;
     padding: 25px;
     margin-bottom: 40px;
+    border-radius: 0;
   }
 `;
 

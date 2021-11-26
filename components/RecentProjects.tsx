@@ -64,7 +64,7 @@ const ProjectItem = styled.div`
       padding-left: 15px;
     }
   }
-  ${breakpoints.device.lg}{
+  ${breakpoints.device.sm}{
     margin-bottom: 25px;
     &:first-child{
       padding-right: 0;
