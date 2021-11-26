@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface BlogListItemProps{
   title: string;
-  date: Date;
+  date: string;
   tags: string;
   description: string;
 }
@@ -34,7 +34,7 @@ const BlogListItem: FC<BlogListItemProps> = ({title, description, date, tags}) =
   return(
     <Wrapper>
       <Title>{title}</Title>
-      <div><DateText>{date.getDate() }</DateText> | <TagText>Typescript, Fundamental</TagText></div>
+      <div><DateText>{date}</DateText> | <TagText>Typescript, Fundamental</TagText></div>
       <Description>{description}</Description>
     </Wrapper>
   )

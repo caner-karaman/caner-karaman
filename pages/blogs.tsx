@@ -4,12 +4,23 @@ import styled from 'styled-components';
 import BlogListItem from '../components/BlogListItem';
 import Container from '../components/Container';
 import Header from "../components/Header";
+import { getSortedPostsData } from '../lib/posts'
 
 const PageTitle = styled.h1`
   padding-top: 120px;
 `
 
-const BlogList: NextPage = () => {
+interface PostData{
+  id: string;
+  date: string;
+  title: string;
+}
+
+interface BlogListProps{
+  allPostsData: Array<PostData>
+}
+
+const BlogList: NextPage<BlogListProps> = ({allPostsData}) => {
   return (
     <div>
       <Head>
@@ -51,15 +62,24 @@ const BlogList: NextPage = () => {
       <main>
         <Container>
           <PageTitle>Blog</PageTitle>
-          <BlogListItem title="UI interaction of the week" date={new Date()} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
-          <BlogListItem title="React Native Nedir" date={new Date()} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
-          <BlogListItem title="Neden React" date={new Date()} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
-          <BlogListItem title="Heyhat, Ben bu isi kiviririm" date={new Date()} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
+          {allPostsData.map(({id, title, date}) => (
+            <BlogListItem key={id} title={title} date={date} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
+          ))}
         </Container>
       </main>
     </div>
   )
 }
 
+export async function getStaticProps() {
+  const allPostsData = getSortedPostsData()
+  return {
+    props: {
+      allPostsData
+    }
+  }
+}
+
 export default BlogList;
+
 
