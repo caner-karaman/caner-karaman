@@ -1,6 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import styled from 'styled-components';
+import breakpoints from '../common/breakpoints';
 import BlogListItem from '../components/BlogListItem';
 import Container from '../components/Container';
 import Header from "../components/Header";
@@ -9,6 +10,14 @@ import { getSortedPostsData } from '../lib/posts'
 
 const PageTitle = styled.h1`
   padding-top: 120px;
+
+  ${breakpoints.device.xl}{
+    padding-top: 100px;
+  }
+  ${breakpoints.device.sm}{
+    padding-top: 70px;
+    line-height: 1.3;
+  }
 `
 
 interface PostData{

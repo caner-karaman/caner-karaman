@@ -65,6 +65,7 @@ const MenuItemText = styled.a<MenuItemTextProps>`
   color: ${({isActive}) => isActive ? '#EEBF63' : '#151517' };
   font-size: 16px;
   transition: 0.3s;
+  cursor: pointer;
   font-weight: ${({isActive}) => isActive ? 700 : 400 };
 
   &:hover {
