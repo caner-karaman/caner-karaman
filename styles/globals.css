@@ -170,6 +170,10 @@ p {
   letter-spacing: 0.11em;
 }
 
+.blog ul {
+  padding: 0 18px;
+}
+
 .blog ul li{
   font-size: 18px;
   line-height: 30px;
@@ -221,6 +225,11 @@ p {
     line-height: 24px;
     letter-spacing: 0.11em;
   }
+
+  .blog ul li{
+    font-size: 16px;
+    line-height: 24px;
+  }
 }
 
 /* SM Devices */
@@ -240,6 +249,15 @@ p {
 
   p {
     font-size: 14px;
+  }
+
+  .blog ul {
+    padding: 0;
+  }
+
+  .blog ul li{
+    font-size: 14px;
+    line-height: 22px;
   }
 }
 

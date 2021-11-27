@@ -5,6 +5,7 @@ import { getAllPostIds, getPostData } from '../../lib/posts'
 import Header from "../../components/Header";
 import styled from 'styled-components';
 import Layout from "../../components/Layout";
+import breakpoints from "../../common/breakpoints";
 
 interface IPost {
   contentHtml: string;
@@ -19,6 +20,16 @@ const PageTitle = styled.h1`
   padding-top: 120px;
   border-bottom: 1px solid lightgray;
   margin-bottom: 25px;
+  
+  ${breakpoints.device.xl}{
+    padding-top: 100px;
+  }
+
+  ${breakpoints.device.sm}{
+    padding-top: 70px;
+    margin-bottom: 15px;
+    line-height: 38px;
+  }
 `
 
 const Article = styled.article`
