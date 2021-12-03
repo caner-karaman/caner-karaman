@@ -26,6 +26,7 @@ const Layout: FC<LayoutProps> = ({children, path}) => {
         />
         <meta name="og:title" content={siteTitle} />
         <meta name="twitter:card" content="summary_large_image" />
+        <meta name="google-site-verification" content="qkgbZKPaQHg4zgy6s-z2OfHh4J8TZHpxCxY-Ha4hBx4" />
       </Head>
       <Header path={path}/>
       {children}
