@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://caner-karaman.vercel.app/
+
+# Sitemaps
+Sitemap: https://caner-karaman.vercel.app/sitemap.xml
