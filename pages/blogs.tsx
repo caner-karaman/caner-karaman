@@ -24,6 +24,8 @@ interface PostData{
   id: string;
   date: string;
   title: string;
+  description: string;
+  tags: string;
 }
 
 interface BlogListProps{
@@ -31,6 +33,7 @@ interface BlogListProps{
 }
 
 const BlogList: NextPage<BlogListProps> = ({allPostsData}) => {
+  console.log(allPostsData);
   return (
     <Layout path="blogs">
       <Head>
@@ -39,9 +42,9 @@ const BlogList: NextPage<BlogListProps> = ({allPostsData}) => {
       </Head>
       <main>
         <Container>
-          <PageTitle>Blog</PageTitle>
-          {allPostsData.map(({id, title, date}) => (
-            <BlogListItem href={`blogs/${id}`} key={id} title={title} date={date} tags="Javascript" description="Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet"/>
+          <PageTitle />
+          {allPostsData.map(({id, title, date, description, tags}) => (
+            <BlogListItem href={`blogs/${id}`} key={id} title={title} date={date} tags={tags} description={description}/>
           ))}
         </Container>
       </main>

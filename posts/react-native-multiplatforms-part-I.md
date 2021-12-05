@@ -1,6 +1,8 @@
 ---
-title: "React Native Multi Platforms Part I"
+title: "How Integrate React Native Web Existing React Native Apps"
 date: "28-11-2021"
+description: "Learn, what is and benefits of react native web, and how can we easily and quickly integrate react native web into existing react native application!"
+tags: "react-native, react-native-web, typescript"
 ---
 Topics we will talk about in this article are:
 
