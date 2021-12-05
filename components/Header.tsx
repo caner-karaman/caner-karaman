@@ -46,10 +46,14 @@ const MenuItem = styled.li`
   }
 `
 
+interface WrapperProps {
+  isHome: boolean;
+}
+
 const Wrapper = styled.header`
   position: fixed;
   z-index: 999;
-  background-color: #f1f1f1;
+  background-color: ${({isHome}) => isHome ? '#f1f1f1' : '#fff'};
   width: 100%;
   -webkit-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
   -moz-box-shadow: 0px 3px 5px 0px rgba(0,0,0,0.3);
@@ -146,7 +150,7 @@ const Header: FC<HeaderProps> = ({path}) => {
   const handleMenuOpen = () => setIsMenuOpened(!isMenuOpened);
 
   return (
-    <Wrapper>
+    <Wrapper isHome={path === 'home'}>
       <Container>
         <StyledHeader>
           <Logo>Caner Karaman</Logo>

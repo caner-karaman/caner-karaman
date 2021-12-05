@@ -33,7 +33,7 @@ const PageTitle = styled.h1`
 `
 
 const Article = styled.article`
-  background-color: #f3f3f3;
+  background-color: #fff;
   padding: 0 15px;
   min-height: 100vh;
 `

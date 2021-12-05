@@ -212,10 +212,6 @@ Yeah! It's finished. You can run this project on three platform, web, android, a
 
 Let's test if it works on all platforms.
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/54d757b9-15e9-4f5b-9d6c-b3f7b618e227/Untitled.png)
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/90fc3394-cbc0-4002-ae85-b5be87aade80/Untitled.png)
-
 ## References:
 
 [React Native for Web](https://necolas.github.io/react-native-web/)
