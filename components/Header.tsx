@@ -50,7 +50,7 @@ interface WrapperProps {
   isHome: boolean;
 }
 
-const Wrapper = styled.header`
+const Wrapper = styled.header<WrapperProps>`
   position: fixed;
   z-index: 999;
   background-color: ${({isHome}) => isHome ? '#f1f1f1' : '#fff'};
