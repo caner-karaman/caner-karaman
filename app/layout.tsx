@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
-import TopNavBar from "./components/TopNavBar";
-import Footer from "./components/Footer";
 import "./globals.css";
 
 const inter = Inter({
@@ -28,9 +26,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans min-h-screen flex flex-col bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
-        <TopNavBar />
         {children}
-        <Footer />
       </body>
     </html>
   );
