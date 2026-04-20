@@ -1,9 +1,24 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 
 export default function SideNavBar() {
+  const pathname = usePathname();
+
+  // Helper function to determine class based on active path
+  const getLinkClasses = (path: string) => {
+    const isActive = pathname === path;
+    const baseClasses = "flex items-center space-x-3 px-3 py-2.5 rounded-md group transition-all duration-200";
+    if (isActive) {
+      return `${baseClasses} text-primary bg-surface-container-low shadow-[inset_0px_0px_10px_rgba(173,198,255,0.1)] border-l-4 border-primary`;
+    }
+    return `${baseClasses} text-on-surface-variant opacity-70 hover:bg-surface-container-high hover:opacity-100 hover:translate-x-1`;
+  };
+
   return (
-    <nav className="bg-[#0e0e0e] text-[#adc6ff] font-sans text-sm font-medium h-screen w-64 fixed left-0 top-0 flex flex-col p-4 space-y-6 z-50">
+    <nav className="bg-surface-container-lowest text-primary font-sans text-sm font-medium h-screen w-64 fixed left-0 top-0 flex flex-col p-4 space-y-6 z-50 border-r border-outline-variant/15">
       {/* Brand/Header Area */}
       <div className="flex items-center space-x-3 px-2 pt-4">
         <div className="relative">
@@ -18,10 +33,10 @@ export default function SideNavBar() {
           </div>
         </div>
         <div className="flex flex-col">
-          <span className="text-[#e5e2e1] font-black uppercase tracking-widest text-xs leading-tight">
+          <span className="text-on-surface font-black uppercase tracking-widest text-xs leading-tight">
             The Architect
           </span>
-          <span className="text-[#c2c6d6] opacity-70 text-xs">
+          <span className="text-on-surface-variant opacity-70 text-xs">
             Level 42 Developer
           </span>
           <span className="mt-1 text-[10px] font-bold text-tertiary uppercase tracking-wider bg-tertiary/10 px-1.5 py-0.5 rounded-sm inline-block w-max">
@@ -31,30 +46,33 @@ export default function SideNavBar() {
       </div>
 
       {/* Main Navigation */}
-      <div className="flex-1 overflow-y-auto space-y-1 mt-6">
+      <div className="flex-1 overflow-y-auto space-y-2 mt-6">
         <Link
-          className="flex items-center space-x-3 px-3 py-2.5 text-[#adc6ff] bg-[#1c1b1b] rounded-md shadow-[inset_0px_0px_10px_rgba(173,198,255,0.1)] group"
+          className={getLinkClasses("/dashboard")}
           href="/dashboard"
         >
           <span
             className="material-symbols-outlined"
-            style={{ fontVariationSettings: "'FILL' 1" }}
+            style={{ fontVariationSettings: pathname === "/dashboard" ? "'FILL' 1" : "'FILL' 0" }}
           >
             dashboard
           </span>
           <span>Overview</span>
         </Link>
         <Link
-          className="flex items-center space-x-3 px-3 py-2.5 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md group"
-          href="#"
+          className={getLinkClasses("/practice")}
+          href="/practice"
         >
-          <span className="material-symbols-outlined group-hover:text-primary transition-colors">
+          <span 
+            className="material-symbols-outlined transition-colors"
+            style={{ fontVariationSettings: pathname === "/practice" ? "'FILL' 1" : "'FILL' 0" }}
+          >
             code
           </span>
           <span>Practice</span>
         </Link>
         <Link
-          className="flex items-center space-x-3 px-3 py-2.5 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md group"
+          className={getLinkClasses("/submissions")}
           href="#"
         >
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
@@ -63,7 +81,7 @@ export default function SideNavBar() {
           <span>Submissions</span>
         </Link>
         <Link
-          className="flex items-center space-x-3 px-3 py-2.5 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md group"
+          className={getLinkClasses("/interviews")}
           href="#"
         >
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
@@ -72,7 +90,7 @@ export default function SideNavBar() {
           <span>Mock Interviews</span>
         </Link>
         <Link
-          className="flex items-center space-x-3 px-3 py-2.5 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md group"
+          className={getLinkClasses("/settings")}
           href="#"
         >
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
