@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -43,6 +43,7 @@ type AuthFormValues = {
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const mode = searchParams.get("mode");
 
   const [isSignIn, setIsSignIn] = useState(mode !== "signup");
@@ -85,6 +86,7 @@ export default function LoginPage() {
         });
         console.log("Login successful:", response);
         // Handle successful login (e.g., set token, redirect)
+        router.push("/dashboard");
       } else {
         const response = await PublicAuthResourceService.registerAccount({
           login: data.username!,
