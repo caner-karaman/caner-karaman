@@ -2,24 +2,109 @@
 
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PublicAuthResourceService } from "@/services/api";
+
+const getAuthSchema = (isSignIn: boolean) => {
+  const baseSchema = z.object({
+    email: z
+      .string()
+      .min(1, "Email is required")
+      .email("Invalid email address"),
+    password: z.string().min(6, "Passphrase must be at least 6 characters"),
+    username: z.string().optional(),
+    confirmPassword: z.string().optional(),
+  });
+
+  if (isSignIn) {
+    return baseSchema;
+  }
+
+  return baseSchema
+    .extend({
+      username: z.string().min(3, "Alias must be at least 3 characters"),
+      confirmPassword: z.string().min(6, "Please confirm your passphrase"),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: "Passphrases don't match",
+      path: ["confirmPassword"],
+    });
+};
+
+type AuthFormValues = {
+  email: string;
+  password: string;
+  username?: string;
+  confirmPassword?: string;
+};
 
 export default function LoginPage() {
   const searchParams = useSearchParams();
-  const [isSignIn, setIsSignIn] = useState(true);
+  const mode = searchParams.get("mode");
 
-  useEffect(() => {
-    const mode = searchParams.get("mode");
-    if (mode === "signup") {
-      setIsSignIn(false);
-    } else if (mode === "signin") {
-      setIsSignIn(true);
+  const [isSignIn, setIsSignIn] = useState(mode !== "signup");
+  const [lastMode, setLastMode] = useState(mode);
+
+  if (mode !== lastMode) {
+    setLastMode(mode);
+    setIsSignIn(mode !== "signup");
+  }
+
+  const [serverError, setServerError] = useState("");
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    reset,
+  } = useForm<AuthFormValues>({
+    resolver: zodResolver(getAuthSchema(isSignIn)),
+    defaultValues: {
+      email: "",
+      password: "",
+      username: "",
+      confirmPassword: "",
+    },
+  });
+
+  const handleModeToggle = (signInMode: boolean) => {
+    setIsSignIn(signInMode);
+    reset();
+  };
+
+  const onSubmit = async (data: AuthFormValues) => {
+    setServerError("");
+    try {
+      if (isSignIn) {
+        const response = await PublicAuthResourceService.login({
+          username: data.email,
+          password: data.password,
+        });
+        console.log("Login successful:", response);
+        // Handle successful login (e.g., set token, redirect)
+      } else {
+        const response = await PublicAuthResourceService.registerAccount({
+          login: data.username!,
+          email: data.email,
+          password: data.password,
+        });
+        console.log("Registration successful:", response);
+        // On success, switch to sign in mode
+        setIsSignIn(true);
+        reset();
+      }
+    } catch (error: any) {
+      console.error("Auth error:", error);
+      setServerError(
+        error?.body?.title ||
+          error?.body?.detail ||
+          error?.message ||
+          "An unexpected error occurred. Please try again."
+      );
     }
-  }, [searchParams]);
-
-  const handleSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Simulate auth action
   };
 
   return (
@@ -30,7 +115,8 @@ export default function LoginPage() {
         <div
           className="absolute inset-0 bg-cover bg-center"
           style={{
-            backgroundImage: "url('https://lh3.googleusercontent.com/aida-public/AB6AXuACAVdaPYM_8C6YBSAdnPfP4IxmIi0gzKk7D14gbHmR2kkLB2IKCrPR_kRTRLUGUZOQbTDXFOLoMAfZa3B9dA1IxPMDfMm2_Bcgb2xH2XxDgC1_P4MH1SjbMuF_2rWtuSfVrc9altuEd9Jcg35Aa5f8rOds_eFlmzqACEjioaDq1V4QaR0D5z9EcBrwfqRT7jPYNFZN1E1XmT_ZCuhdi_iL52tX-itisgBHH9O-aMZJihlSrSz-eVWwFqC4PhQ5gU7hnmeS1r3ALO4F')",
+            backgroundImage:
+              "url('https://lh3.googleusercontent.com/aida-public/AB6AXuACAVdaPYM_8C6YBSAdnPfP4IxmIi0gzKk7D14gbHmR2kkLB2IKCrPR_kRTRLUGUZOQbTDXFOLoMAfZa3B9dA1IxPMDfMm2_Bcgb2xH2XxDgC1_P4MH1SjbMuF_2rWtuSfVrc9altuEd9Jcg35Aa5f8rOds_eFlmzqACEjioaDq1V4QaR0D5z9EcBrwfqRT7jPYNFZN1E1XmT_ZCuhdi_iL52tX-itisgBHH9O-aMZJihlSrSz-eVWwFqC4PhQ5gU7hnmeS1r3ALO4F')",
           }}
         />
         {/* Gradient Overlay for Depth and Text Legibility */}
@@ -46,8 +132,8 @@ export default function LoginPage() {
             </span>
           </h1>
           <p className="text-on-surface-variant text-lg font-medium leading-relaxed max-w-md">
-            Construct systems that scale. Deep work requires an environment devoid
-            of noise, calibrated for focus.
+            Construct systems that scale. Deep work requires an environment
+            devoid of noise, calibrated for focus.
           </p>
         </div>
       </section>
@@ -57,7 +143,10 @@ export default function LoginPage() {
         <div className="w-full max-w-[420px] flex flex-col gap-8 md:gap-10 my-auto py-8">
           {/* Header & Branding */}
           <div className="flex flex-col gap-3 text-center md:text-left">
-            <Link href="/" className="flex items-center justify-center md:justify-start gap-3 mb-4 hover:opacity-80 transition-opacity w-min mx-auto md:mx-0 whitespace-nowrap">
+            <Link
+              href="/"
+              className="flex items-center justify-center md:justify-start gap-3 mb-4 hover:opacity-80 transition-opacity w-min mx-auto md:mx-0 whitespace-nowrap"
+            >
               <div className="w-10 h-10 rounded-lg bg-surface-container-high flex items-center justify-center shadow-[inset_0px_0px_10px_rgba(173,198,255,0.05)]">
                 <span
                   className="material-symbols-outlined text-primary text-[24px]"
@@ -74,7 +163,7 @@ export default function LoginPage() {
               {isSignIn ? "Access Terminal" : "Initialize Account"}
             </h2>
             <p className="text-on-surface-variant text-sm">
-              {isSignIn 
+              {isSignIn
                 ? "Authenticate to enter your personalized development environment."
                 : "Register your developer profile to begin your progression."}
             </p>
@@ -82,22 +171,22 @@ export default function LoginPage() {
 
           {/* State Toggle (Sign In / Create Account) */}
           <div className="flex p-1 bg-surface-container-low rounded-lg relative">
-            <button 
-              onClick={() => setIsSignIn(true)}
+            <button
+              onClick={() => handleModeToggle(true)}
               className={`flex-1 py-2.5 text-sm font-semibold rounded-md transition-all duration-300 relative z-10 ${
-                isSignIn 
-                ? "text-primary shadow-[0_2px_8px_rgba(0,0,0,0.2)] bg-surface-container-high" 
-                : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/20"
+                isSignIn
+                  ? "text-primary shadow-[0_2px_8px_rgba(0,0,0,0.2)] bg-surface-container-high"
+                  : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/20"
               }`}
             >
               Sign In
             </button>
-            <button 
-              onClick={() => setIsSignIn(false)}
+            <button
+              onClick={() => handleModeToggle(false)}
               className={`flex-1 py-2.5 text-sm font-semibold rounded-md transition-all duration-300 relative z-10 ${
-                !isSignIn 
-                ? "text-primary shadow-[0_2px_8px_rgba(0,0,0,0.2)] bg-surface-container-high" 
-                : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/20"
+                !isSignIn
+                  ? "text-primary shadow-[0_2px_8px_rgba(0,0,0,0.2)] bg-surface-container-high"
+                  : "text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest/20"
               }`}
             >
               Create Account
@@ -105,9 +194,16 @@ export default function LoginPage() {
           </div>
 
           {/* Auth Form */}
-          <form className="flex flex-col gap-6" onSubmit={handleSubmit}>
+          <form
+            className="flex flex-col gap-6"
+            onSubmit={handleSubmit(onSubmit)}
+          >
+            {serverError && (
+              <div className="p-3 text-sm text-red-500 bg-red-500/10 border border-red-500/20 rounded-lg animate-in fade-in zoom-in-95 duration-200">
+                {serverError}
+              </div>
+            )}
             <div className="flex flex-col gap-5">
-              
               {/* Username Input Group (Only for Create Account) */}
               {!isSignIn && (
                 <div className="flex flex-col gap-2 animate-in fade-in slide-in-from-top-2 duration-300">
@@ -128,8 +224,14 @@ export default function LoginPage() {
                       id="username"
                       placeholder="dev_architect"
                       type="text"
+                      {...register("username")}
                     />
                   </div>
+                  {errors.username && (
+                    <span className="text-red-500 text-xs ml-1">
+                      {errors.username.message}
+                    </span>
+                  )}
                 </div>
               )}
 
@@ -152,8 +254,14 @@ export default function LoginPage() {
                     id="email"
                     placeholder="developer@obsidian.com"
                     type="email"
+                    {...register("email")}
                   />
                 </div>
+                {errors.email && (
+                  <span className="text-red-500 text-xs ml-1">
+                    {errors.email.message}
+                  </span>
+                )}
               </div>
 
               {/* Password Input Group */}
@@ -185,8 +293,14 @@ export default function LoginPage() {
                     id="password"
                     placeholder="••••••••••••"
                     type="password"
+                    {...register("password")}
                   />
                 </div>
+                {errors.password && (
+                  <span className="text-red-500 text-xs ml-1">
+                    {errors.password.message}
+                  </span>
+                )}
               </div>
 
               {/* Confirm Password Input Group (Only for Create Account) */}
@@ -209,18 +323,29 @@ export default function LoginPage() {
                       id="confirm-password"
                       placeholder="••••••••••••"
                       type="password"
+                      {...register("confirmPassword")}
                     />
                   </div>
+                  {errors.confirmPassword && (
+                    <span className="text-red-500 text-xs ml-1">
+                      {errors.confirmPassword.message}
+                    </span>
+                  )}
                 </div>
               )}
             </div>
 
             {/* Primary CTA */}
             <button
-              className="w-full mt-2 py-3.5 px-6 bg-primary text-on-primary font-semibold text-sm rounded-xl hover:bg-primary-container transition-all duration-200 shadow-[0_0_24px_rgba(173,198,255,0.15)] hover:shadow-[0_0_32px_rgba(77,142,255,0.25)] hover:-translate-y-0.5 active:translate-y-0"
+              className="w-full mt-2 py-3.5 px-6 bg-primary text-on-primary font-semibold text-sm rounded-xl hover:bg-primary-container transition-all duration-200 shadow-[0_0_24px_rgba(173,198,255,0.15)] hover:shadow-[0_0_32px_rgba(77,142,255,0.25)] hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:pointer-events-none"
               type="submit"
+              disabled={isSubmitting}
             >
-              {isSignIn ? "Initialize Session" : "Create Developer Profile"}
+              {isSubmitting
+                ? "Processing..."
+                : isSignIn
+                ? "Initialize Session"
+                : "Create Developer Profile"}
             </button>
           </form>
 
