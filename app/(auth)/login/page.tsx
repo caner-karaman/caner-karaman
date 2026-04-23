@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useSearchParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -104,7 +104,7 @@ export default function LoginPage() {
         error?.body?.title ||
           error?.body?.detail ||
           error?.message ||
-          "An unexpected error occurred. Please try again."
+          "An unexpected error occurred. Please try again.",
       );
     }
   };
@@ -346,8 +346,8 @@ export default function LoginPage() {
               {isSubmitting
                 ? "Processing..."
                 : isSignIn
-                ? "Initialize Session"
-                : "Create Developer Profile"}
+                  ? "Initialize Session"
+                  : "Create Developer Profile"}
             </button>
           </form>
 

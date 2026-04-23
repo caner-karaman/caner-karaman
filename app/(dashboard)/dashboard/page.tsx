@@ -1,6 +1,49 @@
 import Link from "next/link";
 
-export default function DashboardPage() {
+type DifficultyStats = {
+  total?: number;
+  solved?: number;
+};
+
+type DashboardStats = {
+  easy?: DifficultyStats;
+  medium?: DifficultyStats;
+  hard?: DifficultyStats;
+};
+
+async function getDashboardStats(): Promise<DashboardStats | null> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:9000"}/api/public/dashboard/stats`,
+      { next: { revalidate: 60 } }
+    );
+    if (!res.ok) return null;
+    return res.json();
+  } catch {
+    return null;
+  }
+}
+
+export default async function DashboardPage() {
+  const stats = await getDashboardStats();
+
+  const easy = stats?.easy;
+  const medium = stats?.medium;
+  const hard = stats?.hard;
+
+  const easyPct =
+    easy?.total && easy.solved != null
+      ? Math.round((easy.solved / easy.total) * 100)
+      : 0;
+  const mediumPct =
+    medium?.total && medium.solved != null
+      ? Math.round((medium.solved / medium.total) * 100)
+      : 0;
+  const hardPct =
+    hard?.total && hard.solved != null
+      ? Math.round((hard.solved / hard.total) * 100)
+      : 0;
+
   return (
     <main className="flex-1 p-8 md:p-12 min-h-screen overflow-x-hidden">
       {/* Header Section */}
@@ -10,80 +53,16 @@ export default function DashboardPage() {
             Welcome back to the void.
           </h1>
           <p className="text-on-surface-variant font-body text-base md:text-lg leading-relaxed">
-            Your architecture is sound, but there are structural weaknesses in Graph Traversal. Recommend immediate reinforcement.
+            Your architecture is sound, but there are structural weaknesses in
+            Graph Traversal. Recommend immediate reinforcement.
           </p>
-        </div>
-        
-        {/* Streak Indicator */}
-        <div className="hidden md:flex flex-col items-end">
-          <div className="bg-surface-container-high rounded-xl p-4 flex items-center space-x-3 shadow-[0_8px_30px_rgba(0,0,0,0.5)]">
-            <div className="w-10 h-10 rounded-full bg-tertiary-container/20 flex items-center justify-center">
-              <span className="text-2xl">🔥</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="text-on-surface font-bold text-xl leading-none">
-                12 Days
-              </span>
-              <span className="text-on-surface-variant text-xs uppercase tracking-wider font-label mt-1">
-                Current Streak
-              </span>
-            </div>
-          </div>
         </div>
       </header>
 
       {/* Bento Grid: Stats */}
       <section className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-12">
-        {/* Overall Progress (Spans 4 cols) */}
-        <div className="md:col-span-4 bg-surface-container-low rounded-xl p-6 relative overflow-hidden group hover:-translate-y-1 transition-transform duration-300 flex flex-col justify-between min-h-[300px]">
-          <div className="absolute inset-0 bg-primary/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"></div>
-          <div>
-            <h3 className="text-on-surface-variant font-label text-sm uppercase tracking-wider mb-1">
-              Architecture Status
-            </h3>
-            <h2 className="text-on-surface font-headline text-2xl font-bold">
-              482 Solved
-            </h2>
-          </div>
-          <div className="flex justify-center items-center my-6">
-            {/* CSS Donut Chart Approximation using utility classes from global css (or arbitrary conic-gradient) */}
-            <div
-              className="relative w-40 h-40 rounded-full"
-              style={{
-                background:
-                  "conic-gradient(var(--color-secondary) 0% 45%, var(--color-tertiary) 45% 75%, var(--color-error) 75% 85%, var(--color-surface-container-highest) 85% 100%)",
-              }}
-            >
-              <div className="absolute inset-3 bg-surface-container-low rounded-full flex items-center justify-center shadow-[inset_0_4px_20px_rgba(0,0,0,0.8)]">
-                <div className="text-center">
-                  <span className="block text-3xl font-black text-on-surface tracking-tighter">
-                    18%
-                  </span>
-                  <span className="block text-[10px] text-on-surface-variant uppercase tracking-widest mt-1">
-                    Completion
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-between text-xs font-label">
-            <span className="text-secondary flex items-center">
-              <span className="w-2 h-2 rounded-full bg-secondary mr-2 shadow-[0_0_5px_theme(colors.secondary)]"></span>
-              215
-            </span>
-            <span className="text-tertiary flex items-center">
-              <span className="w-2 h-2 rounded-full bg-tertiary mr-2 shadow-[0_0_5px_theme(colors.tertiary)]"></span>
-              144
-            </span>
-            <span className="text-error flex items-center">
-              <span className="w-2 h-2 rounded-full bg-error mr-2 shadow-[0_0_5px_theme(colors.error)]"></span>
-              123
-            </span>
-          </div>
-        </div>
-
-        {/* Difficulty Breakdown (Spans 8 cols) */}
-        <div className="md:col-span-8 grid grid-cols-1 md:grid-cols-3 gap-6">
+        {/* Difficulty Breakdown */}
+        <div className="md:col-span-12 grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Easy */}
           <div className="bg-surface-container-lowest rounded-xl p-6 flex flex-col justify-between border border-outline-variant/15 hover:border-secondary/30 transition-colors duration-300">
             <div>
@@ -103,18 +82,18 @@ export default function DashboardPage() {
               </h3>
               <div className="flex items-end space-x-2">
                 <span className="text-on-surface text-3xl font-black tracking-tighter">
-                  215
+                  {easy?.solved ?? "—"}
                 </span>
                 <span className="text-on-surface-variant text-sm mb-1">
-                  / 800
+                  / {easy?.total ?? "—"}
                 </span>
               </div>
             </div>
             <div className="mt-8">
               <div className="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-secondary rounded-full shadow-[0_0_10px_theme(colors.secondary)]"
-                  style={{ width: "27%" }}
+                  className="h-full bg-secondary rounded-full shadow-[0_0_10px_theme(colors.secondary)] transition-all duration-500"
+                  style={{ width: `${easyPct}%` }}
                 ></div>
               </div>
             </div>
@@ -139,18 +118,18 @@ export default function DashboardPage() {
               </h3>
               <div className="flex items-end space-x-2">
                 <span className="text-on-surface text-3xl font-black tracking-tighter">
-                  144
+                  {medium?.solved ?? "—"}
                 </span>
                 <span className="text-on-surface-variant text-sm mb-1">
-                  / 1600
+                  / {medium?.total ?? "—"}
                 </span>
               </div>
             </div>
             <div className="mt-8">
               <div className="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-tertiary rounded-full shadow-[0_0_10px_theme(colors.tertiary)]"
-                  style={{ width: "9%" }}
+                  className="h-full bg-tertiary rounded-full shadow-[0_0_10px_theme(colors.tertiary)] transition-all duration-500"
+                  style={{ width: `${mediumPct}%` }}
                 ></div>
               </div>
             </div>
@@ -175,18 +154,18 @@ export default function DashboardPage() {
               </h3>
               <div className="flex items-end space-x-2">
                 <span className="text-on-surface text-3xl font-black tracking-tighter">
-                  123
+                  {hard?.solved ?? "—"}
                 </span>
                 <span className="text-on-surface-variant text-sm mb-1">
-                  / 600
+                  / {hard?.total ?? "—"}
                 </span>
               </div>
             </div>
             <div className="mt-8">
               <div className="h-1.5 w-full bg-surface-container-highest rounded-full overflow-hidden">
                 <div
-                  className="h-full bg-error rounded-full shadow-[0_0_10px_theme(colors.error)]"
-                  style={{ width: "20%" }}
+                  className="h-full bg-error rounded-full shadow-[0_0_10px_theme(colors.error)] transition-all duration-500"
+                  style={{ width: `${hardPct}%` }}
                 ></div>
               </div>
             </div>
@@ -210,12 +189,14 @@ export default function DashboardPage() {
           </button>
         </div>
 
-        {/* Custom "Table" using grid to avoid 1px borders */}
+        {/* Custom "Table" using grid */}
         <div className="w-full flex flex-col">
           {/* Header */}
           <div className="grid grid-cols-12 gap-4 px-6 py-3 text-xs uppercase tracking-widest text-on-surface-variant font-label border-b border-surface-container-highest/50">
             <div className="col-span-6 sm:col-span-5">Problem Module</div>
-            <div className="col-span-3 sm:col-span-3 hidden sm:block">Status</div>
+            <div className="col-span-3 sm:col-span-3 hidden sm:block">
+              Status
+            </div>
             <div className="col-span-3 sm:col-span-2">Language</div>
             <div className="col-span-3 sm:col-span-2 text-right">Runtime</div>
           </div>

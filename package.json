@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate:api": "openapi-typescript-codegen --input ./swagger.json --output ./services/api --client fetch"
+    "generate:api": "openapi --input ./swagger.json --output ./services/api --client fetch"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",

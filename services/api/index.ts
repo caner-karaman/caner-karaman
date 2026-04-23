@@ -13,6 +13,8 @@ export type { CategoryDTO } from './models/CategoryDTO';
 export type { ContactMessageDTO } from './models/ContactMessageDTO';
 export type { CustomLoginVM } from './models/CustomLoginVM';
 export type { CustomRegisterVM } from './models/CustomRegisterVM';
+export type { DashboardStatsDTO } from './models/DashboardStatsDTO';
+export type { DifficultyStatsDTO } from './models/DifficultyStatsDTO';
 export type { FaqItemDTO } from './models/FaqItemDTO';
 export type { PostDTO } from './models/PostDTO';
 export type { PostTranslationDTO } from './models/PostTranslationDTO';
@@ -21,6 +23,7 @@ export type { SitemapPostDTO } from './models/SitemapPostDTO';
 export type { TagDTO } from './models/TagDTO';
 export type { WebsiteDTO } from './models/WebsiteDTO';
 
+export { DashboardResourceService } from './services/DashboardResourceService';
 export { PublicAuthResourceService } from './services/PublicAuthResourceService';
 export { PublicContactApiService } from './services/PublicContactApiService';
 export { PublicPostIntegrationApiService } from './services/PublicPostIntegrationApiService';

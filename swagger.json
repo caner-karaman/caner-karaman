@@ -323,6 +323,26 @@
                     }
                 }
             }
+        },
+        "/api/public/dashboard/stats": {
+            "get": {
+                "tags": [
+                    "dashboard-resource"
+                ],
+                "operationId": "getDashboardStats",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardStatsDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -716,6 +736,33 @@
                 "required": [
                     "website"
                 ]
+            },
+            "DashboardStatsDTO": {
+                "type": "object",
+                "properties": {
+                    "easy": {
+                        "$ref": "#/components/schemas/DifficultyStatsDTO"
+                    },
+                    "medium": {
+                        "$ref": "#/components/schemas/DifficultyStatsDTO"
+                    },
+                    "hard": {
+                        "$ref": "#/components/schemas/DifficultyStatsDTO"
+                    }
+                }
+            },
+            "DifficultyStatsDTO": {
+                "type": "object",
+                "properties": {
+                    "total": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "solved": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
             }
         }
     }
