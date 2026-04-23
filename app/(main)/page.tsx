@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 export default function Home() {
   return (
     <main className="pt-24 pb-20 px-6 md:px-12 max-w-7xl mx-auto space-y-32">
@@ -12,12 +14,18 @@ export default function Home() {
             fundamentals that get you hired.
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
-            <button className="bg-primary text-on-primary px-8 py-4 rounded-md font-bold text-lg shadow-[0_0_24px_rgba(173,198,255,0.2)] hover:bg-primary-fixed hover:-translate-y-1 transition-all duration-200 active:scale-95">
+            <Link 
+              href="/login?mode=signup"
+              className="bg-primary text-on-primary px-8 py-4 rounded-md font-bold text-lg shadow-[0_0_24px_rgba(173,198,255,0.2)] hover:bg-primary-fixed hover:-translate-y-1 transition-all duration-200 active:scale-95 inline-block"
+            >
               Start Now (Blind 75)
-            </button>
-            <button className="border border-outline/20 text-on-surface px-8 py-4 rounded-md font-bold text-lg hover:bg-surface-container-high transition-all duration-200">
+            </Link>
+            <Link 
+              href="/roadmaps"
+              className="border border-outline/20 text-on-surface px-8 py-4 rounded-md font-bold text-lg hover:bg-surface-container-high transition-all duration-200 inline-block"
+            >
               Explore Roadmaps
-            </button>
+            </Link>
           </div>
         </div>
         <div className="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-xl bg-surface-container-lowest border border-outline-variant/15 shadow-[0_24px_48px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden relative group">

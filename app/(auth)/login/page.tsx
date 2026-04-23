@@ -1,10 +1,21 @@
 "use client";
 
 import Link from "next/link";
-import { FormEvent, useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { FormEvent, useEffect, useState } from "react";
 
 export default function LoginPage() {
+  const searchParams = useSearchParams();
   const [isSignIn, setIsSignIn] = useState(true);
+
+  useEffect(() => {
+    const mode = searchParams.get("mode");
+    if (mode === "signup") {
+      setIsSignIn(false);
+    } else if (mode === "signin") {
+      setIsSignIn(true);
+    }
+  }, [searchParams]);
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault();

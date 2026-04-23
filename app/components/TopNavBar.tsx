@@ -20,25 +20,25 @@ export default function TopNavBar() {
           <div className="hidden md:flex gap-6">
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="#"
+              href="/practice"
             >
               Problems
             </Link>
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="#"
+              href="/roadmaps"
             >
               Roadmaps
             </Link>
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="#"
+              href="/courses"
             >
               Courses
             </Link>
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="#"
+              href="/blog"
             >
               Blog
             </Link>
@@ -50,13 +50,13 @@ export default function TopNavBar() {
           </button>
           <Link
             className="hidden md:block text-zinc-400 font-medium hover:text-zinc-100 px-4 py-2"
-            href="#"
+            href="/login?mode=signin"
           >
             Sign In
           </Link>
           <Link
             className="bg-primary text-on-primary px-4 py-2 rounded-md font-semibold hover:bg-primary-fixed transition-colors active:scale-95 duration-150"
-            href="#"
+            href="/login?mode=signup"
           >
             Get Started
           </Link>
