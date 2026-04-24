@@ -20,7 +20,10 @@ export type { PostDTO } from './models/PostDTO';
 export type { PostTranslationDTO } from './models/PostTranslationDTO';
 export type { SitemapCategoryDTO } from './models/SitemapCategoryDTO';
 export type { SitemapPostDTO } from './models/SitemapPostDTO';
+export { SubmissionDTO } from './models/SubmissionDTO';
+export { SubmissionRequestVM } from './models/SubmissionRequestVM';
 export type { TagDTO } from './models/TagDTO';
+export { UserSolvedProblemDTO } from './models/UserSolvedProblemDTO';
 export type { WebsiteDTO } from './models/WebsiteDTO';
 
 export { DashboardResourceService } from './services/DashboardResourceService';
@@ -28,3 +31,4 @@ export { PublicAuthResourceService } from './services/PublicAuthResourceService'
 export { PublicContactApiService } from './services/PublicContactApiService';
 export { PublicPostIntegrationApiService } from './services/PublicPostIntegrationApiService';
 export { PublicSitemapApiService } from './services/PublicSitemapApiService';
+export { SubmissionResourceService } from './services/SubmissionResourceService';

@@ -11,6 +11,13 @@ type DashboardStats = {
   hard?: DifficultyStats;
 };
 
+type UserSolvedProblem = {
+  title?: string;
+  slug?: string;
+  difficulty?: "EASY" | "MEDIUM" | "HARD";
+  solvedDate?: string;
+};
+
 async function getDashboardStats(): Promise<DashboardStats | null> {
   try {
     const res = await fetch(
@@ -24,8 +31,24 @@ async function getDashboardStats(): Promise<DashboardStats | null> {
   }
 }
 
+async function getSolvedProblems(): Promise<UserSolvedProblem[]> {
+  try {
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:9000"}/api/public/dashboard/solved-problems?size=5&sort=solvedDate,desc`,
+      { next: { revalidate: 60 } }
+    );
+    if (!res.ok) return [];
+    return res.json();
+  } catch {
+    return [];
+  }
+}
+
 export default async function DashboardPage() {
-  const stats = await getDashboardStats();
+  const [stats, solvedProblems] = await Promise.all([
+    getDashboardStats(),
+    getSolvedProblems(),
+  ]);
 
   const easy = stats?.easy;
   const medium = stats?.medium;
@@ -178,10 +201,10 @@ export default async function DashboardPage() {
         <div className="px-6 mb-6 flex justify-between items-end">
           <div>
             <h2 className="text-on-surface font-headline text-2xl font-bold tracking-tight">
-              Recent Deployments
+              Recent Solved Problems
             </h2>
             <p className="text-on-surface-variant text-sm mt-1">
-              Last 5 submissions recorded in the architecture.
+              Last 5 problems solved in the architecture.
             </p>
           </div>
           <button className="text-primary hover:text-primary-container text-sm font-medium transition-colors hidden sm:block">
@@ -193,123 +216,59 @@ export default async function DashboardPage() {
         <div className="w-full flex flex-col">
           {/* Header */}
           <div className="grid grid-cols-12 gap-4 px-6 py-3 text-xs uppercase tracking-widest text-on-surface-variant font-label border-b border-surface-container-highest/50">
-            <div className="col-span-6 sm:col-span-5">Problem Module</div>
-            <div className="col-span-3 sm:col-span-3 hidden sm:block">
-              Status
-            </div>
-            <div className="col-span-3 sm:col-span-2">Language</div>
-            <div className="col-span-3 sm:col-span-2 text-right">Runtime</div>
+            <div className="col-span-6">Title</div>
+            <div className="col-span-3">Difficulty</div>
+            <div className="col-span-3 text-right">Solved Date</div>
           </div>
 
           {/* Rows */}
           <div className="flex flex-col space-y-1 px-2 py-2">
-            {/* Row 1 */}
-            <Link
-              className="grid grid-cols-12 gap-4 px-4 py-4 items-center hover:bg-surface-container-high rounded-lg transition-colors group"
-              href="#"
-            >
-              <div className="col-span-6 sm:col-span-5 flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-error"></div>
-                <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
-                  Median of Two Sorted Arrays
-                </span>
+            {solvedProblems.length === 0 ? (
+              <div className="p-8 text-center text-on-surface-variant italic opacity-50">
+                No problems solved yet.
               </div>
-              <div className="col-span-3 hidden sm:flex items-center">
-                <span className="text-error bg-error/10 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                  Failed
-                </span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 flex items-center space-x-2 text-on-surface-variant text-sm">
-                <span className="material-symbols-outlined text-[16px]">
-                  terminal
-                </span>
-                <span>Rust</span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 text-right text-on-surface-variant text-sm font-mono">
-                N/A
-              </div>
-            </Link>
-
-            {/* Row 2 */}
-            <Link
-              className="grid grid-cols-12 gap-4 px-4 py-4 items-center hover:bg-surface-container-high rounded-lg transition-colors group"
-              href="#"
-            >
-              <div className="col-span-6 sm:col-span-5 flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-tertiary"></div>
-                <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
-                  Longest Substring Without Repeating
-                </span>
-              </div>
-              <div className="col-span-3 hidden sm:flex items-center">
-                <span className="text-secondary bg-secondary/10 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                  Accepted
-                </span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 flex items-center space-x-2 text-on-surface-variant text-sm">
-                <span className="material-symbols-outlined text-[16px]">
-                  data_object
-                </span>
-                <span>TypeScript</span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 text-right text-on-surface-variant text-sm font-mono">
-                64 ms
-              </div>
-            </Link>
-
-            {/* Row 3 */}
-            <Link
-              className="grid grid-cols-12 gap-4 px-4 py-4 items-center hover:bg-surface-container-high rounded-lg transition-colors group"
-              href="#"
-            >
-              <div className="col-span-6 sm:col-span-5 flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-secondary"></div>
-                <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
-                  Two Sum
-                </span>
-              </div>
-              <div className="col-span-3 hidden sm:flex items-center">
-                <span className="text-secondary bg-secondary/10 px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                  Accepted
-                </span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 flex items-center space-x-2 text-on-surface-variant text-sm">
-                <span className="material-symbols-outlined text-[16px]">
-                  data_object
-                </span>
-                <span>TypeScript</span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 text-right text-on-surface-variant text-sm font-mono">
-                52 ms
-              </div>
-            </Link>
-
-            {/* Row 4 */}
-            <Link
-              className="grid grid-cols-12 gap-4 px-4 py-4 items-center hover:bg-surface-container-high rounded-lg transition-colors group"
-              href="#"
-            >
-              <div className="col-span-6 sm:col-span-5 flex items-center space-x-3">
-                <div className="w-2 h-2 rounded-full bg-tertiary"></div>
-                <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
-                  3Sum
-                </span>
-              </div>
-              <div className="col-span-3 hidden sm:flex items-center">
-                <span className="text-surface-variant bg-surface-container-highest px-2 py-1 rounded text-xs font-bold uppercase tracking-wider">
-                  Time Limit
-                </span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 flex items-center space-x-2 text-on-surface-variant text-sm">
-                <span className="material-symbols-outlined text-[16px]">
-                  code
-                </span>
-                <span>Python</span>
-              </div>
-              <div className="col-span-3 sm:col-span-2 text-right text-on-surface-variant text-sm font-mono">
-                &gt; 2000 ms
-              </div>
-            </Link>
+            ) : (
+              solvedProblems.map((problem, idx) => (
+                <Link
+                  key={idx}
+                  className="grid grid-cols-12 gap-4 px-4 py-4 items-center hover:bg-surface-container-high rounded-lg transition-colors group"
+                  href={`/problems/${problem.slug}`}
+                >
+                  <div className="col-span-6 flex items-center space-x-3">
+                    <div
+                      className={`w-2 h-2 rounded-full ${
+                        problem.difficulty === "EASY"
+                          ? "bg-secondary"
+                          : problem.difficulty === "MEDIUM"
+                          ? "bg-tertiary"
+                          : "bg-error"
+                      }`}
+                    ></div>
+                    <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
+                      {problem.title}
+                    </span>
+                  </div>
+                  <div className="col-span-3 flex items-center">
+                    <span
+                      className={`px-2 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${
+                        problem.difficulty === "EASY"
+                          ? "text-secondary bg-secondary/10"
+                          : problem.difficulty === "MEDIUM"
+                          ? "text-tertiary bg-tertiary/10"
+                          : "text-error bg-error/10"
+                      }`}
+                    >
+                      {problem.difficulty}
+                    </span>
+                  </div>
+                  <div className="col-span-3 text-right text-on-surface-variant text-sm">
+                    {problem.solvedDate
+                      ? new Date(problem.solvedDate).toLocaleDateString()
+                      : "—"}
+                  </div>
+                </Link>
+              ))
+            )}
           </div>
         </div>
       </section>
