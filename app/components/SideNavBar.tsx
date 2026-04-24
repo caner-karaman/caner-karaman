@@ -10,7 +10,8 @@ export default function SideNavBar() {
   // Helper function to determine class based on active path
   const getLinkClasses = (path: string) => {
     const isActive = pathname === path;
-    const baseClasses = "flex items-center space-x-3 px-3 py-2.5 rounded-md group transition-all duration-200";
+    const baseClasses =
+      "flex items-center space-x-3 px-3 py-2.5 rounded-md group transition-all duration-200";
     if (isActive) {
       return `${baseClasses} text-primary bg-surface-container-low shadow-[inset_0px_0px_10px_rgba(173,198,255,0.1)] border-l-4 border-primary`;
     }
@@ -47,52 +48,43 @@ export default function SideNavBar() {
 
       {/* Main Navigation */}
       <div className="flex-1 overflow-y-auto space-y-2 mt-6">
-        <Link
-          className={getLinkClasses("/dashboard")}
-          href="/dashboard"
-        >
+        <Link className={getLinkClasses("/dashboard")} href="/dashboard">
           <span
             className="material-symbols-outlined"
-            style={{ fontVariationSettings: pathname === "/dashboard" ? "'FILL' 1" : "'FILL' 0" }}
+            style={{
+              fontVariationSettings:
+                pathname === "/dashboard" ? "'FILL' 1" : "'FILL' 0",
+            }}
           >
             dashboard
           </span>
           <span>Overview</span>
         </Link>
-        <Link
-          className={getLinkClasses("/practice")}
-          href="/practice"
-        >
-          <span 
+        <Link className={getLinkClasses("/practice")} href="/practice">
+          <span
             className="material-symbols-outlined transition-colors"
-            style={{ fontVariationSettings: pathname === "/practice" ? "'FILL' 1" : "'FILL' 0" }}
+            style={{
+              fontVariationSettings:
+                pathname === "/practice" ? "'FILL' 1" : "'FILL' 0",
+            }}
           >
             code
           </span>
           <span>Practice</span>
         </Link>
-        <Link
-          className={getLinkClasses("/submissions")}
-          href="#"
-        >
+        <Link className={getLinkClasses("/submissions")} href="#">
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
             history
           </span>
           <span>Submissions</span>
         </Link>
-        <Link
-          className={getLinkClasses("/interviews")}
-          href="#"
-        >
+        <Link className={getLinkClasses("/interviews")} href="#">
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
             groups
           </span>
           <span>Mock Interviews</span>
         </Link>
-        <Link
-          className={getLinkClasses("/settings")}
-          href="#"
-        >
+        <Link className={getLinkClasses("/settings")} href="#">
           <span className="material-symbols-outlined group-hover:text-primary transition-colors">
             settings
           </span>
@@ -102,19 +94,7 @@ export default function SideNavBar() {
 
       {/* Footer Area */}
       <div className="space-y-4 pt-4">
-        <button className="w-full py-2.5 px-4 bg-gradient-to-br from-primary to-primary-container text-on-primary font-bold rounded-md hover:shadow-[0_0_20px_rgba(77,142,255,0.3)] transition-all duration-200">
-          Upgrade to Pro
-        </button>
         <div className="space-y-1">
-          <Link
-            className="flex items-center space-x-3 px-3 py-2 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md text-xs group"
-            href="#"
-          >
-            <span className="material-symbols-outlined text-[18px]">
-              menu_book
-            </span>
-            <span>Documentation</span>
-          </Link>
           <Link
             className="flex items-center space-x-3 px-3 py-2 text-[#c2c6d6] opacity-70 hover:bg-[#2a2a2a] hover:opacity-100 transition-colors rounded-md text-xs group"
             href="#"
