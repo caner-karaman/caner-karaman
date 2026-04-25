@@ -6,7 +6,8 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { PublicAuthResourceService, OpenAPI } from "@/services/api";
+import { PublicAuthResourceService } from "@/services/api";
+import { setAuthToken } from "@/lib/auth";
 
 const getAuthSchema = (isSignIn: boolean) => {
   const baseSchema = z.object({
@@ -85,9 +86,7 @@ export default function LoginPage() {
           password: data.password,
         });
         if (response.id_token) {
-          localStorage.setItem("auth-token", response.id_token);
-          OpenAPI.TOKEN = response.id_token;
-          window.dispatchEvent(new Event("auth-change"));
+          setAuthToken(response.id_token);
         }
         router.push("/dashboard");
       } else {

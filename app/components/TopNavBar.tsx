@@ -1,37 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { OpenAPI } from "@/services/api";
+import { useAuth } from "./AuthProvider";
 
 export default function TopNavBar() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    // Function to sync auth state from external system (localStorage)
-    const syncAuth = () => {
-      const token = localStorage.getItem("auth-token");
-      if (token) {
-        OpenAPI.TOKEN = token;
-        setIsLoggedIn(true);
-      } else {
-        setIsLoggedIn(false);
-      }
-    };
-
-    // Initial sync
-    syncAuth();
-
-    // Subscribe to auth changes (custom event)
-    window.addEventListener("auth-change", syncAuth);
-    // Also listen to storage events from other tabs
-    window.addEventListener("storage", syncAuth);
-
-    return () => {
-      window.removeEventListener("auth-change", syncAuth);
-      window.removeEventListener("storage", syncAuth);
-    };
-  }, []);
+  const { isLoggedIn } = useAuth();
 
   return (
     <nav className="fixed top-0 w-full z-50 bg-zinc-900/60 backdrop-blur-xl border-b border-white/5 shadow-2xl shadow-black/40 font-sans tracking-tight antialiased">

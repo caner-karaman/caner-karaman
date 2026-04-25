@@ -19,3 +19,46 @@ Additionally, consider performance implications, efficient error handling, and e
 Everything produced must be operationally sound. We consider how to host, manage, monitor, and maintain our solutions. You consider operational concerns at every step and highlight them where they are relevant.
 
 Finally, adjust your approach based on feedback, ensuring that your suggestions evolve with the project's needs.
+
+---
+
+# Project Architecture Rules
+
+## Authentication & Token Management
+
+All authentication state flows through `lib/auth.ts`. **Never** access `localStorage` for auth tokens directly from components or pages.
+
+### Mandatory Patterns
+- **Store token**: Use `setAuthToken(token)` — automatically persists and broadcasts `auth-change` event.
+- **Read token**: Use `getAuthToken()` or `isAuthenticated()`.
+- **Remove token**: Use `clearAuthToken()`.
+- **React context**: Use the `useAuth()` hook from `AuthProvider` in any component that needs auth state.
+
+### OpenAPI Client Initialization
+The generated OpenAPI client (`services/api`) uses `OpenAPI.TOKEN` to attach the `Authorization: Bearer` header. This resolver is set up by `initOpenAPIAuth()` in `lib/auth.ts`.
+
+**Three layers guarantee the resolver is in place before any API call:**
+1. Module-level side-effect in `lib/auth.ts` (eager init).
+2. Explicit call in `AuthProvider.tsx` (React tree mount).
+3. Explicit call in `(dashboard)/layout.tsx` (code-split defence).
+
+> ⚠️ **Never** assign `OpenAPI.TOKEN` directly from a page or component. Always go through `initOpenAPIAuth()`.
+
+## Protected Routes
+
+All routes under `app/(dashboard)/` are protected by a client-side auth guard in the layout:
+- If no token exists → redirect to `/login`.
+- Children are **not rendered** until auth is verified (prevents API calls without a token).
+- This is a UX guard; the backend is the real security boundary (401).
+
+### Adding New Protected Routes
+If you create a new route group that requires authentication:
+1. Import `initOpenAPIAuth` and `isAuthenticated` from `@/lib/auth`.
+2. Add the same guard pattern used in `app/(dashboard)/layout.tsx`.
+3. **Do not** make API calls in components that could render before the guard confirms auth.
+
+## Generated API Services (`services/api/`)
+
+- These files are **auto-generated** from `swagger.json` via `openapi-typescript-codegen`. **Do not edit them manually.**
+- To regenerate: `yarn generate:api`
+- All services use the shared `OpenAPI` config object — token injection is automatic once `initOpenAPIAuth()` has run.

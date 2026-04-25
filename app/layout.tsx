@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import AuthProvider from "./components/AuthProvider";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -26,7 +27,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans min-h-screen flex flex-col bg-background text-on-background selection:bg-primary-container selection:text-on-primary-container">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
