@@ -24,6 +24,7 @@ export type { SitemapPostDTO } from './models/SitemapPostDTO';
 export { SubmissionDTO } from './models/SubmissionDTO';
 export { SubmissionRequestVM } from './models/SubmissionRequestVM';
 export type { TagDTO } from './models/TagDTO';
+export type { ToggleSolvedResponseDTO } from './models/ToggleSolvedResponseDTO';
 export { UserSolvedProblemDTO } from './models/UserSolvedProblemDTO';
 export type { WebsiteDTO } from './models/WebsiteDTO';
 
@@ -33,4 +34,5 @@ export { PublicContactApiService } from './services/PublicContactApiService';
 export { PublicPostIntegrationApiService } from './services/PublicPostIntegrationApiService';
 export { PublicProblemResourceService } from './services/PublicProblemResourceService';
 export { PublicSitemapApiService } from './services/PublicSitemapApiService';
+export { PublicUserProblemResourceService } from './services/PublicUserProblemResourceService';
 export { SubmissionResourceService } from './services/SubmissionResourceService';

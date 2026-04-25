@@ -9,6 +9,7 @@ export type ProblemListDTO = {
     slug?: string;
     difficulty?: ProblemListDTO.difficulty;
     tags?: Array<TagDTO>;
+    isSolved?: boolean;
 };
 export namespace ProblemListDTO {
     export enum difficulty {

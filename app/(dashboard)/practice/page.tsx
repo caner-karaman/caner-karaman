@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { PublicProblemResourceService } from "@/services/api/services/PublicProblemResourceService";
+import { PublicUserProblemResourceService } from "@/services/api/services/PublicUserProblemResourceService";
 import type { ProblemListDTO } from "@/services/api/models/ProblemListDTO";
 
 const PAGE_SIZE = 20;
@@ -95,6 +96,21 @@ export default function PracticeProblemsPage() {
     setDifficulty(value);
     setPage(0);
     setTotalCount(0);
+  };
+
+  const handleToggleSolved = async (problemId: number) => {
+    try {
+      const response = await PublicUserProblemResourceService.toggleSolved(
+        problemId,
+      );
+      setProblems((prev) =>
+        prev.map((p) =>
+          p.id === problemId ? { ...p, isSolved: response.solved } : p,
+        ),
+      );
+    } catch (err) {
+      console.error("Failed to toggle solved status:", err);
+    }
   };
 
   const renderPaginationButtons = () => {
@@ -321,14 +337,32 @@ export default function PracticeProblemsPage() {
                       key={problem.id}
                       className="hover:bg-surface-container-high hover:-translate-y-px transition-all duration-200 group"
                     >
-                      {/* Status - default unsolved for public endpoint */}
-                      <td className="px-6 py-4 text-center text-outline-variant">
-                        <span
-                          className="material-symbols-outlined text-[20px]"
-                          style={{ fontVariationSettings: "'FILL' 0" }}
+                      {/* Status */}
+                      <td className="px-6 py-4 text-center">
+                        <button
+                          onClick={() =>
+                            problem.id && handleToggleSolved(problem.id)
+                          }
+                          className={`flex items-center justify-center w-full transition-all duration-200 hover:scale-110 active:scale-95 ${
+                            problem.isSolved
+                              ? "text-secondary"
+                              : "text-outline-variant"
+                          }`}
+                          aria-label={
+                            problem.isSolved
+                              ? "Mark as unsolved"
+                              : "Mark as solved"
+                          }
                         >
-                          circle
-                        </span>
+                          <span
+                            className="material-symbols-outlined text-[22px]"
+                            style={{
+                              fontVariationSettings: `'FILL' ${problem.isSolved ? 1 : 0}`,
+                            }}
+                          >
+                            {problem.isSolved ? "check_circle" : "circle"}
+                          </span>
+                        </button>
                       </td>
                       {/* Title */}
                       <td className="px-6 py-4 font-medium">

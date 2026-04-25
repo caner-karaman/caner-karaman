@@ -25,6 +25,37 @@
         }
     ],
     "paths": {
+        "/api/public/user-problems/toggle/{problemId}": {
+            "post": {
+                "tags": [
+                    "public-user-problem-resource"
+                ],
+                "operationId": "toggleSolved",
+                "parameters": [
+                    {
+                        "name": "problemId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ToggleSolvedResponseDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/public/submissions": {
             "get": {
                 "tags": [
@@ -210,6 +241,30 @@
                             "*/*": {
                                 "schema": {
                                     "$ref": "#/components/schemas/AuthResponseVM"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/public/user-problems/solved-ids": {
+            "get": {
+                "tags": [
+                    "public-user-problem-resource"
+                ],
+                "operationId": "getSolvedProblemIds",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "type": "integer",
+                                        "format": "int64"
+                                    }
                                 }
                             }
                         }
@@ -612,6 +667,18 @@
     },
     "components": {
         "schemas": {
+            "ToggleSolvedResponseDTO": {
+                "type": "object",
+                "properties": {
+                    "problemId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "solved": {
+                        "type": "boolean"
+                    }
+                }
+            },
             "SubmissionRequestVM": {
                 "type": "object",
                 "properties": {
@@ -1019,6 +1086,9 @@
                             "$ref": "#/components/schemas/TagDTO"
                         },
                         "uniqueItems": true
+                    },
+                    "isSolved": {
+                        "type": "boolean"
                     }
                 }
             },
