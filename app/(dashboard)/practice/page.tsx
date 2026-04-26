@@ -4,7 +4,9 @@ import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
 import { PublicProblemResourceService } from "@/services/api/services/PublicProblemResourceService";
 import { PublicUserProblemResourceService } from "@/services/api/services/PublicUserProblemResourceService";
+import { PublicTagResourceService } from "@/services/api/services/PublicTagResourceService";
 import type { ProblemListDTO } from "@/services/api/models/ProblemListDTO";
+import type { TagListDTO } from "@/services/api/models/TagListDTO";
 
 const PAGE_SIZE = 20;
 const DEBOUNCE_MS = 400;
@@ -30,6 +32,8 @@ export default function PracticeProblemsPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [difficulty, setDifficulty] = useState<string>("");
+  const [tags, setTags] = useState<TagListDTO[]>([]);
+  const [selectedTagId, setSelectedTagId] = useState<string>("");
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const abortRef = useRef<AbortController | null>(null);
 
@@ -45,20 +49,34 @@ export default function PracticeProblemsPage() {
     return () => clearTimeout(timer);
   }, [search]);
 
+  // Fetch tags on mount
+  useEffect(() => {
+    PublicTagResourceService.getAllTags(1, "en")
+      .then((data) => {
+        setTags(data);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch tags:", err);
+      });
+  }, []);
+
   const fetchProblems = useCallback(async () => {
     // Cancel any in-flight request
     abortRef.current?.abort();
     const controller = new AbortController();
     abortRef.current = controller;
 
-    setLoading(true);
-    setError(null);
     try {
+      // Defer state updates to the next microtask to avoid cascading render warnings
+      await Promise.resolve();
+      setLoading(true);
+      setError(null);
+
       const data = await PublicProblemResourceService.getAllProblems(
         "en",
         debouncedSearch.trim() || undefined,
         (difficulty as "EASY" | "MEDIUM" | "HARD") || undefined,
-        undefined,
+        selectedTagId ? [Number(selectedTagId)] : undefined,
         page,
         pageSize,
         ["id,asc"],
@@ -85,7 +103,7 @@ export default function PracticeProblemsPage() {
         setLoading(false);
       }
     }
-  }, [page, pageSize, debouncedSearch, difficulty]);
+  }, [page, pageSize, debouncedSearch, difficulty, selectedTagId]);
 
   useEffect(() => {
     fetchProblems();
@@ -95,6 +113,12 @@ export default function PracticeProblemsPage() {
   // Difficulty change resets page immediately (no debounce needed)
   const handleDifficultyChange = (value: string) => {
     setDifficulty(value);
+    setPage(0);
+    setTotalCount(0);
+  };
+
+  const handleTagChange = (value: string) => {
+    setSelectedTagId(value);
     setPage(0);
     setTotalCount(0);
   };
@@ -198,11 +222,17 @@ export default function PracticeProblemsPage() {
               <option value="attempted">Attempted</option>
               <option value="unsolved">Unsolved</option>
             </select>
-            <select className="bg-surface border border-outline-variant/20 text-on-surface text-sm rounded-md py-2 pl-3 pr-8 focus:border-primary focus:ring-0 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c2c6d6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat cursor-pointer hidden sm:block">
+            <select
+              className="bg-surface border border-outline-variant/20 text-on-surface text-sm rounded-md py-2 pl-3 pr-8 focus:border-primary focus:ring-0 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c2c6d6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat cursor-pointer hidden sm:block"
+              value={selectedTagId}
+              onChange={(e) => handleTagChange(e.target.value)}
+            >
               <option value="">Tags</option>
-              <option value="arrays">Arrays</option>
-              <option value="dp">Dynamic Programming</option>
-              <option value="graphs">Graphs</option>
+              {tags.map((tag) => (
+                <option key={tag.id} value={tag.id}>
+                  {tag.name}
+                </option>
+              ))}
             </select>
           </div>
         </div>

@@ -2,13 +2,9 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { PostDTO } from './PostDTO';
-import type { WebsiteDTO } from './WebsiteDTO';
-export type TagDTO = {
+export type TagListDTO = {
     id?: number;
     name?: string;
     slug?: string;
-    website: WebsiteDTO;
-    postses?: Array<PostDTO>;
 };
 

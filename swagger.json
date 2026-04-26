@@ -272,6 +272,49 @@
                 }
             }
         },
+        "/api/public/tags": {
+            "get": {
+                "tags": [
+                    "public-tag-resource"
+                ],
+                "operationId": "getAllTags",
+                "parameters": [
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "tr"
+                        }
+                    },
+                    {
+                        "name": "websiteId",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/TagListDTO"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/public/sitemap/posts": {
             "get": {
                 "tags": [
@@ -940,6 +983,21 @@
                     }
                 }
             },
+            "TagListDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    }
+                }
+            },
             "SitemapPostDTO": {
                 "type": "object",
                 "properties": {
@@ -1098,6 +1156,12 @@
                     "id": {
                         "type": "integer",
                         "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
                     },
                     "website": {
                         "$ref": "#/components/schemas/WebsiteDTO"
