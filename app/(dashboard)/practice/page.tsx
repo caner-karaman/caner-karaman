@@ -30,9 +30,10 @@ export default function PracticeProblemsPage() {
   const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [difficulty, setDifficulty] = useState<string>("");
+  const [pageSize, setPageSize] = useState(PAGE_SIZE);
   const abortRef = useRef<AbortController | null>(null);
 
-  const totalPages = Math.max(1, Math.ceil(totalCount / PAGE_SIZE));
+  const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
 
   // Debounce search input
   useEffect(() => {
@@ -59,7 +60,7 @@ export default function PracticeProblemsPage() {
         (difficulty as "EASY" | "MEDIUM" | "HARD") || undefined,
         undefined,
         page,
-        PAGE_SIZE,
+        pageSize,
         ["id,asc"],
       );
 
@@ -67,11 +68,11 @@ export default function PracticeProblemsPage() {
       if (controller.signal.aborted) return;
 
       setProblems(data);
-      if (data.length < PAGE_SIZE) {
-        setTotalCount(page * PAGE_SIZE + data.length);
+      if (data.length < pageSize) {
+        setTotalCount(page * pageSize + data.length);
       } else {
         setTotalCount((prev) =>
-          prev <= page * PAGE_SIZE ? (page + 2) * PAGE_SIZE : prev,
+          prev <= page * pageSize ? (page + 2) * pageSize : prev,
         );
       }
     } catch (err) {
@@ -84,7 +85,7 @@ export default function PracticeProblemsPage() {
         setLoading(false);
       }
     }
-  }, [page, debouncedSearch, difficulty]);
+  }, [page, pageSize, debouncedSearch, difficulty]);
 
   useEffect(() => {
     fetchProblems();
@@ -100,9 +101,8 @@ export default function PracticeProblemsPage() {
 
   const handleToggleSolved = async (problemId: number) => {
     try {
-      const response = await PublicUserProblemResourceService.toggleSolved(
-        problemId,
-      );
+      const response =
+        await PublicUserProblemResourceService.toggleSolved(problemId);
       setProblems((prev) =>
         prev.map((p) =>
           p.id === problemId ? { ...p, isSolved: response.solved } : p,
@@ -174,43 +174,12 @@ export default function PracticeProblemsPage() {
             sets. Build your problem-solving skills systematically.
           </p>
         </div>
-        {/* Curated List Tabs */}
-        <div className="flex flex-wrap gap-2">
-          <button className="px-4 py-1.5 rounded-full bg-surface-container-high text-on-surface text-sm font-medium shadow-sm transition-all duration-200 border border-outline-variant/30 glow-primary">
-            All Problems
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-sm transition-all duration-200">
-            Blind 75
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-sm transition-all duration-200">
-            NeetCode 150
-          </button>
-          <button className="px-4 py-1.5 rounded-full bg-surface-container-low text-on-surface-variant hover:bg-surface-container-high hover:text-on-surface text-sm transition-all duration-200 hidden sm:block">
-            Top Interview Questions
-          </button>
-        </div>
       </div>
 
       {/* Control Bar Layer */}
       <div className="bg-surface-container-lowest rounded-xl p-4 mb-6 shadow-lg border border-outline-variant/15 flex flex-col lg:flex-row gap-4 items-center justify-between">
         {/* Left: Search & Filters */}
         <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto">
-          {/* Search */}
-          <div className="flex-1 min-w-[200px] relative">
-            <span
-              className="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm"
-              style={{ fontVariationSettings: "'FILL' 0" }}
-            >
-              search
-            </span>
-            <input
-              className="w-full bg-surface pl-9 pr-4 py-2 rounded-md text-sm text-on-surface border border-outline-variant/20 focus:border-primary focus:ring-0 transition-all duration-200 placeholder-on-surface-variant"
-              placeholder="Search topics or titles..."
-              type="text"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
-          </div>
           {/* Dropdowns */}
           <div className="flex items-center gap-2">
             <select
@@ -237,16 +206,6 @@ export default function PracticeProblemsPage() {
             </select>
           </div>
         </div>
-        {/* Right: Quick Action */}
-        <button className="w-full lg:w-auto flex items-center justify-center gap-2 border border-outline/20 text-primary hover:bg-surface-container-high transition-colors duration-200 px-4 py-2 rounded-md text-sm font-medium">
-          <span
-            className="material-symbols-outlined text-[18px]"
-            style={{ fontVariationSettings: "'FILL' 0" }}
-          >
-            shuffle
-          </span>
-          Pick One
-        </button>
       </div>
 
       {/* Problem Data Table Container */}
@@ -417,27 +376,54 @@ export default function PracticeProblemsPage() {
           </table>
         </div>
         {/* Pagination Footer */}
-        <div className="bg-surface-container-lowest px-6 py-4 flex items-center justify-between">
-          <span className="text-sm text-on-surface-variant">
-            {loading && problems.length === 0
-              ? "Loading..."
-              : `Showing ${page * PAGE_SIZE + 1} to ${page * PAGE_SIZE + problems.length} of ${totalCount} entries`}
-          </span>
-          <div className="flex items-center gap-1">
+        <div className="bg-surface-container-lowest px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4 border-t border-outline-variant/10">
+          <div className="flex items-center gap-6 order-2 sm:order-1">
+            <div className="flex items-center gap-2">
+              <span className="text-xs font-medium text-on-surface-variant uppercase tracking-wider">
+                Rows:
+              </span>
+              <select
+                className="bg-surface border border-outline-variant/20 text-on-surface text-sm rounded-md py-1 px-2 focus:border-primary focus:ring-0 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c2c6d6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:12px_12px] bg-[right_6px_center] bg-no-repeat cursor-pointer pr-6"
+                value={pageSize}
+                onChange={(e) => {
+                  setPageSize(Number(e.target.value));
+                  setPage(0);
+                  setTotalCount(0);
+                }}
+              >
+                <option value={10}>10</option>
+                <option value={20}>20</option>
+                <option value={50}>50</option>
+                <option value={100}>100</option>
+              </select>
+            </div>
+            <span className="text-sm text-on-surface-variant font-medium">
+              {loading && problems.length === 0
+                ? "Loading..."
+                : `Showing ${page * pageSize + 1}–${page * pageSize + problems.length} of ${totalCount} items`}
+            </span>
+          </div>
+          <div className="flex items-center gap-1 order-1 sm:order-2">
             <button
-              className="px-3 py-1.5 rounded bg-surface text-on-surface-variant border border-outline-variant/20 hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded bg-surface text-on-surface-variant border border-outline-variant/20 hover:bg-surface-container-high hover:text-on-surface transition-all disabled:opacity-30 disabled:cursor-not-allowed text-sm font-medium"
               disabled={page === 0}
               onClick={() => setPage((p) => Math.max(0, p - 1))}
             >
-              Prev
+              <span className="material-symbols-outlined text-[18px] align-middle">
+                chevron_left
+              </span>
             </button>
-            {renderPaginationButtons()}
+            <div className="flex items-center gap-1 mx-1">
+              {renderPaginationButtons()}
+            </div>
             <button
-              className="px-3 py-1.5 rounded bg-surface text-on-surface-variant border border-outline-variant/20 hover:bg-surface-container-high transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded bg-surface text-on-surface-variant border border-outline-variant/20 hover:bg-surface-container-high hover:text-on-surface transition-all disabled:opacity-30 disabled:cursor-not-allowed text-sm font-medium"
               disabled={page >= totalPages - 1}
               onClick={() => setPage((p) => p + 1)}
             >
-              Next
+              <span className="material-symbols-outlined text-[18px] align-middle">
+                chevron_right
+              </span>
             </button>
           </div>
         </div>
