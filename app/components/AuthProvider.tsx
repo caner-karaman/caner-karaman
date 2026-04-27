@@ -20,7 +20,7 @@ interface AuthContextValue {
   /** Whether the user has a valid (non-empty) JWT in storage. */
   isLoggedIn: boolean;
   /** Persist a token, update context, and notify other tabs/components. */
-  login: (token: string) => void;
+  login: (token: string, refreshToken?: string) => void;
   /** Remove the token, update context, and notify other tabs/components. */
   logout: () => void;
 }
@@ -74,8 +74,8 @@ export default function AuthProvider({
     };
   }, [syncAuth]);
 
-  const login = useCallback((token: string) => {
-    setAuthToken(token);
+  const login = useCallback((token: string, refreshToken?: string) => {
+    setAuthToken(token, refreshToken);
     setIsLoggedIn(true);
   }, []);
 

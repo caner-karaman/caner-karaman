@@ -218,6 +218,36 @@
                 }
             }
         },
+        "/api/public/auth/refresh": {
+            "post": {
+                "tags": [
+                    "public-auth-resource"
+                ],
+                "operationId": "refresh",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/RefreshVM"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/AuthResponseVM"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/public/auth/login": {
             "post": {
                 "tags": [
@@ -882,26 +912,16 @@
                     "password"
                 ]
             },
-            "CustomLoginVM": {
+            "RefreshVM": {
                 "type": "object",
                 "properties": {
-                    "username": {
+                    "refreshToken": {
                         "type": "string",
-                        "maxLength": 50,
                         "minLength": 1
-                    },
-                    "password": {
-                        "type": "string",
-                        "maxLength": 100,
-                        "minLength": 4
-                    },
-                    "rememberMe": {
-                        "type": "boolean"
                     }
                 },
                 "required": [
-                    "password",
-                    "username"
+                    "refreshToken"
                 ]
             },
             "AdminUserDTO": {
@@ -980,8 +1000,33 @@
                     },
                     "id_token": {
                         "type": "string"
+                    },
+                    "refresh_token": {
+                        "type": "string"
                     }
                 }
+            },
+            "CustomLoginVM": {
+                "type": "object",
+                "properties": {
+                    "username": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "minLength": 1
+                    },
+                    "password": {
+                        "type": "string",
+                        "maxLength": 100,
+                        "minLength": 4
+                    },
+                    "rememberMe": {
+                        "type": "boolean"
+                    }
+                },
+                "required": [
+                    "password",
+                    "username"
+                ]
             },
             "TagListDTO": {
                 "type": "object",

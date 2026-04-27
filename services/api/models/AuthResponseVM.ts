@@ -6,5 +6,6 @@ import type { AdminUserDTO } from './AdminUserDTO';
 export type AuthResponseVM = {
     user?: AdminUserDTO;
     id_token?: string;
+    refresh_token?: string;
 };
 

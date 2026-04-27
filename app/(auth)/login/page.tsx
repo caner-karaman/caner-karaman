@@ -86,7 +86,7 @@ export default function LoginPage() {
           password: data.password,
         });
         if (response.id_token) {
-          setAuthToken(response.id_token);
+          setAuthToken(response.id_token, response.refresh_token);
         }
         router.push("/dashboard");
       } else {

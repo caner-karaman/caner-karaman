@@ -19,6 +19,7 @@ export type { FaqItemDTO } from './models/FaqItemDTO';
 export type { PostDTO } from './models/PostDTO';
 export type { PostTranslationDTO } from './models/PostTranslationDTO';
 export { ProblemListDTO } from './models/ProblemListDTO';
+export type { RefreshVM } from './models/RefreshVM';
 export type { SitemapCategoryDTO } from './models/SitemapCategoryDTO';
 export type { SitemapPostDTO } from './models/SitemapPostDTO';
 export { SubmissionDTO } from './models/SubmissionDTO';

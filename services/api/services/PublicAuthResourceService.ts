@@ -5,6 +5,7 @@
 import type { AuthResponseVM } from '../models/AuthResponseVM';
 import type { CustomLoginVM } from '../models/CustomLoginVM';
 import type { CustomRegisterVM } from '../models/CustomRegisterVM';
+import type { RefreshVM } from '../models/RefreshVM';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
 import { request as __request } from '../core/request';
@@ -20,6 +21,21 @@ export class PublicAuthResourceService {
         return __request(OpenAPI, {
             method: 'POST',
             url: '/api/public/auth/register',
+            body: requestBody,
+            mediaType: 'application/json',
+        });
+    }
+    /**
+     * @param requestBody
+     * @returns AuthResponseVM OK
+     * @throws ApiError
+     */
+    public static refresh(
+        requestBody: RefreshVM,
+    ): CancelablePromise<AuthResponseVM> {
+        return __request(OpenAPI, {
+            method: 'POST',
+            url: '/api/public/auth/refresh',
             body: requestBody,
             mediaType: 'application/json',
         });
