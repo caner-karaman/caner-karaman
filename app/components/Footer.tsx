@@ -13,9 +13,12 @@ export default function Footer() {
               Join thousands of developers leveling up their careers.
             </p>
           </div>
-          <button className="bg-primary text-on-primary px-6 py-3 rounded-md font-semibold hover:bg-primary-container transition-colors">
+          <Link
+            href="/practice"
+            className="bg-primary text-on-primary px-6 py-3 rounded-md font-semibold hover:bg-primary-container transition-colors inline-block"
+          >
             Start solving problems today
-          </button>
+          </Link>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
           <div className="col-span-2 md:col-span-1 space-y-4">

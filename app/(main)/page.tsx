@@ -15,7 +15,7 @@ export default function Home() {
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
             <Link
-              href="/login?mode=signup"
+              href="/dashboard"
               className="bg-primary text-on-primary px-8 py-4 rounded-md font-bold text-lg shadow-[0_0_24px_rgba(173,198,255,0.2)] hover:bg-primary-fixed hover:-translate-y-1 transition-all duration-200 active:scale-95 inline-block"
             >
               Start Now
