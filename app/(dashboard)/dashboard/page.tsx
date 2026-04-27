@@ -1,54 +1,42 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { DashboardResourceService } from "@/services/api/services/DashboardResourceService";
+import type { DashboardStatsDTO } from "@/services/api/models/DashboardStatsDTO";
+import type { UserSolvedProblemDTO } from "@/services/api/models/UserSolvedProblemDTO";
 
-type DifficultyStats = {
-  total?: number;
-  solved?: number;
-};
+export default function DashboardPage() {
+  const [stats, setStats] = useState<DashboardStatsDTO | null>(null);
+  const [solvedProblems, setSolvedProblems] = useState<UserSolvedProblemDTO[]>([]);
+  const [loading, setLoading] = useState(true);
 
-type DashboardStats = {
-  easy?: DifficultyStats;
-  medium?: DifficultyStats;
-  hard?: DifficultyStats;
-};
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const [statsData, solvedProblemsData] = await Promise.all([
+          DashboardResourceService.getDashboardStats(),
+          DashboardResourceService.getSolvedProblems("en", 0, 5, ["solvedDate,desc"]),
+        ]);
+        setStats(statsData);
+        setSolvedProblems(solvedProblemsData);
+      } catch (error) {
+        console.error("Failed to load dashboard data", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchData();
+  }, []);
 
-type UserSolvedProblem = {
-  title?: string;
-  slug?: string;
-  difficulty?: "EASY" | "MEDIUM" | "HARD";
-  solvedDate?: string;
-};
-
-async function getDashboardStats(): Promise<DashboardStats | null> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:9000"}/api/public/dashboard/stats`,
-      { next: { revalidate: 60 } }
+  if (loading) {
+    return (
+      <main className="flex-1 p-8 md:p-12 min-h-screen flex items-center justify-center">
+        <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin"></div>
+      </main>
     );
-    if (!res.ok) return null;
-    return res.json();
-  } catch {
-    return null;
   }
-}
 
-async function getSolvedProblems(): Promise<UserSolvedProblem[]> {
-  try {
-    const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:9000"}/api/public/dashboard/solved-problems?size=5&sort=solvedDate,desc`,
-      { next: { revalidate: 60 } }
-    );
-    if (!res.ok) return [];
-    return res.json();
-  } catch {
-    return [];
-  }
-}
-
-export default async function DashboardPage() {
-  const [stats, solvedProblems] = await Promise.all([
-    getDashboardStats(),
-    getSolvedProblems(),
-  ]);
 
   const easy = stats?.easy;
   const medium = stats?.medium;
@@ -76,8 +64,8 @@ export default async function DashboardPage() {
             Welcome back to the void.
           </h1>
           <p className="text-on-surface-variant font-body text-base md:text-lg leading-relaxed">
-            Your architecture is sound, but there are structural weaknesses in
-            Graph Traversal. Recommend immediate reinforcement.
+            Track your progress, refine your skills, and master the art of
+            problem solving.
           </p>
         </div>
       </header>
@@ -240,8 +228,8 @@ export default async function DashboardPage() {
                         problem.difficulty === "EASY"
                           ? "bg-secondary"
                           : problem.difficulty === "MEDIUM"
-                          ? "bg-tertiary"
-                          : "bg-error"
+                            ? "bg-tertiary"
+                            : "bg-error"
                       }`}
                     ></div>
                     <span className="text-on-surface font-medium text-sm group-hover:text-primary transition-colors truncate">
@@ -254,8 +242,8 @@ export default async function DashboardPage() {
                         problem.difficulty === "EASY"
                           ? "text-secondary bg-secondary/10"
                           : problem.difficulty === "MEDIUM"
-                          ? "text-tertiary bg-tertiary/10"
-                          : "text-error bg-error/10"
+                            ? "text-tertiary bg-tertiary/10"
+                            : "text-error bg-error/10"
                       }`}
                     >
                       {problem.difficulty}

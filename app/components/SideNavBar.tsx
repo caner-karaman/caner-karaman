@@ -35,13 +35,7 @@ export default function SideNavBar() {
         </div>
         <div className="flex flex-col">
           <span className="text-on-surface font-black uppercase tracking-widest text-xs leading-tight">
-            The Architect
-          </span>
-          <span className="text-on-surface-variant opacity-70 text-xs">
-            Level 42 Developer
-          </span>
-          <span className="mt-1 text-[10px] font-bold text-tertiary uppercase tracking-wider bg-tertiary/10 px-1.5 py-0.5 rounded-sm inline-block w-max">
-            Premium Member
+            The Developer
           </span>
         </div>
       </div>
@@ -71,24 +65,6 @@ export default function SideNavBar() {
             code
           </span>
           <span>Practice</span>
-        </Link>
-        <Link className={getLinkClasses("/submissions")} href="#">
-          <span className="material-symbols-outlined group-hover:text-primary transition-colors">
-            history
-          </span>
-          <span>Submissions</span>
-        </Link>
-        <Link className={getLinkClasses("/interviews")} href="#">
-          <span className="material-symbols-outlined group-hover:text-primary transition-colors">
-            groups
-          </span>
-          <span>Mock Interviews</span>
-        </Link>
-        <Link className={getLinkClasses("/settings")} href="#">
-          <span className="material-symbols-outlined group-hover:text-primary transition-colors">
-            settings
-          </span>
-          <span>Settings</span>
         </Link>
       </div>
 

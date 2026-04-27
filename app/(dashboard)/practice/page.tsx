@@ -216,12 +216,6 @@ export default function PracticeProblemsPage() {
               <option value="MEDIUM">Medium</option>
               <option value="HARD">Hard</option>
             </select>
-            <select className="bg-surface border border-outline-variant/20 text-on-surface text-sm rounded-md py-2 pl-3 pr-8 focus:border-primary focus:ring-0 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c2c6d6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat cursor-pointer">
-              <option value="">Status</option>
-              <option value="solved">Solved</option>
-              <option value="attempted">Attempted</option>
-              <option value="unsolved">Unsolved</option>
-            </select>
             <select
               className="bg-surface border border-outline-variant/20 text-on-surface text-sm rounded-md py-2 pl-3 pr-8 focus:border-primary focus:ring-0 appearance-none bg-[url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%23c2c6d6%22%20stroke-width%3D%222%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpolyline%20points%3D%226%209%2012%2015%2018%209%22%3E%3C%2Fpolyline%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[right_8px_center] bg-no-repeat cursor-pointer hidden sm:block"
               value={selectedTagId}
@@ -252,7 +246,6 @@ export default function PracticeProblemsPage() {
               <tr>
                 <th className="px-6 py-4 w-12 text-center">Status</th>
                 <th className="px-6 py-4">Title</th>
-                <th className="px-6 py-4 text-center">Solution</th>
                 <th className="px-6 py-4 w-32">Difficulty</th>
                 <th className="px-6 py-4 hidden md:table-cell">Tags</th>
               </tr>
@@ -261,7 +254,7 @@ export default function PracticeProblemsPage() {
               {/* Initial loading (no data yet) */}
               {loading && problems.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-16 text-center">
+                  <td colSpan={4} className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <div className="w-8 h-8 border-2 border-primary/30 border-t-primary rounded-full animate-spin" />
                       <span className="text-on-surface-variant text-sm">
@@ -274,7 +267,7 @@ export default function PracticeProblemsPage() {
 
               {!loading && error && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-16 text-center">
+                  <td colSpan={4} className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <span
                         className="material-symbols-outlined text-error text-[32px]"
@@ -298,7 +291,7 @@ export default function PracticeProblemsPage() {
 
               {!loading && !error && problems.length === 0 && (
                 <tr>
-                  <td colSpan={5} className="px-6 py-16 text-center">
+                  <td colSpan={4} className="px-6 py-16 text-center">
                     <div className="flex flex-col items-center gap-3">
                       <span
                         className="material-symbols-outlined text-on-surface-variant text-[32px]"
@@ -361,20 +354,6 @@ export default function PracticeProblemsPage() {
                         >
                           {problem.title}
                         </Link>
-                      </td>
-                      {/* Solution */}
-                      <td className="px-6 py-4 text-center">
-                        <button
-                          aria-label="Solution"
-                          className="text-on-surface-variant hover:text-primary transition-colors duration-150"
-                        >
-                          <span
-                            className="material-symbols-outlined text-[18px]"
-                            style={{ fontVariationSettings: "'FILL' 0" }}
-                          >
-                            article
-                          </span>
-                        </button>
                       </td>
                       {/* Difficulty */}
                       <td className="px-6 py-4">
