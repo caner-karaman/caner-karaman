@@ -9,7 +9,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Obsidian Architect - Interview Prep",
+  title: "Caner Karaman - Interview Prep",
   description: "Don't leave your interviews to chance.",
 };
 

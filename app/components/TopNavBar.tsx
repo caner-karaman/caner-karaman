@@ -20,36 +20,14 @@ export default function TopNavBar() {
             >
               hexagon
             </span>
-            Obsidian Architect
+            Caner Karaman
           </Link>
           <div className="hidden md:flex gap-6">
-            {isLoggedIn && (
-              <>
-                <Link
-                  className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-                  href="/practice"
-                >
-                  Problems
-                </Link>
-                <Link
-                  className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-                  href="/roadmaps"
-                >
-                  Roadmaps
-                </Link>
-                <Link
-                  className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-                  href="/courses"
-                >
-                  Courses
-                </Link>
-              </>
-            )}
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="/blog"
+              href="/practice"
             >
-              Blog
+              Problems
             </Link>
           </div>
         </div>

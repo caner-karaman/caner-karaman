@@ -26,10 +26,10 @@ export default function Footer() {
               >
                 hexagon
               </span>
-              Obsidian Architect
+              Caner Karaman
             </span>
             <p className="text-zinc-500">
-              © 2024 Obsidian Architect. Designed for the deep-thinking
+              © 2024 Caner Karaman. Designed for the deep-thinking
               developer.
             </p>
           </div>

@@ -8,7 +8,7 @@ export default function EditorHeader() {
         <div className="flex items-center gap-6">
           {/* Brand Logo */}
           <Link href="/" className="text-xl font-black text-on-surface tracking-[-0.02em] hover:opacity-80 transition-opacity">
-            ObsidianCode
+            Caner Karaman
           </Link>
 
           {/* Navigation Links / Breadcrumb */}

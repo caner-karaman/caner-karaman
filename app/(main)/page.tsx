@@ -14,18 +14,18 @@ export default function Home() {
             fundamentals that get you hired.
           </p>
           <div className="flex flex-wrap gap-4 pt-4">
-            <Link 
+            <Link
               href="/login?mode=signup"
               className="bg-primary text-on-primary px-8 py-4 rounded-md font-bold text-lg shadow-[0_0_24px_rgba(173,198,255,0.2)] hover:bg-primary-fixed hover:-translate-y-1 transition-all duration-200 active:scale-95 inline-block"
             >
-              Start Now (Blind 75)
+              Start Now
             </Link>
-            <Link 
+            {/* <Link
               href="/roadmaps"
               className="border border-outline/20 text-on-surface px-8 py-4 rounded-md font-bold text-lg hover:bg-surface-container-high transition-all duration-200 inline-block"
             >
               Explore Roadmaps
-            </Link>
+            </Link> */}
           </div>
         </div>
         <div className="md:w-1/2 w-full h-[400px] md:h-[500px] rounded-xl bg-surface-container-lowest border border-outline-variant/15 shadow-[0_24px_48px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden relative group">
@@ -54,21 +54,21 @@ export default function Home() {
       {/* Stats Banner */}
       <section className="flex flex-col md:flex-row justify-center items-center gap-8 md:gap-24 py-12 bg-surface-container-lowest rounded-xl border border-outline-variant/15">
         <div className="text-center space-y-2">
-          <p className="text-4xl font-black text-primary">500+</p>
+          <p className="text-4xl font-black text-primary">75+</p>
           <p className="text-sm font-medium text-on-surface-variant tracking-wider uppercase">
             Curated Problems
           </p>
         </div>
         <div className="hidden md:block w-px h-16 bg-outline-variant/30"></div>
         <div className="text-center space-y-2">
-          <p className="text-4xl font-black text-secondary">10+</p>
+          <p className="text-4xl font-black text-secondary">1</p>
           <p className="text-sm font-medium text-on-surface-variant tracking-wider uppercase">
-            Interactive Roadmaps
+            Interactive Roadmap
           </p>
         </div>
         <div className="hidden md:block w-px h-16 bg-outline-variant/30"></div>
         <div className="text-center space-y-2">
-          <p className="text-4xl font-black text-tertiary">14</p>
+          <p className="text-4xl font-black text-tertiary">2</p>
           <p className="text-sm font-medium text-on-surface-variant tracking-wider uppercase">
             Languages Supported
           </p>
@@ -171,8 +171,8 @@ export default function Home() {
               <div className="space-y-2">
                 <h3 className="text-xl font-bold">Frontend Engineering</h3>
                 <p className="text-sm text-on-surface-variant line-clamp-2">
-                  Master React, vanilla JavaScript, CSS architecture, and browser
-                  performance optimization.
+                  Master React, vanilla JavaScript, CSS architecture, and
+                  browser performance optimization.
                 </p>
               </div>
               <div className="flex items-center gap-3">
@@ -212,7 +212,7 @@ export default function Home() {
               arrow_forward
             </span>
           </div>
-          <div className="bg-surface-container-low border border-outline-variant/15 rounded-xl p-6 relative group hover:bg-surface-container-high transition-colors">
+          {/* <div className="bg-surface-container-low border border-outline-variant/15 rounded-xl p-6 relative group hover:bg-surface-container-high transition-colors">
             <div className="space-y-3">
               <h3 className="text-lg font-bold">NeetCode 150</h3>
               <p className="text-xs text-on-surface-variant">
@@ -233,7 +233,7 @@ export default function Home() {
             <div className="absolute bottom-6 left-6 text-xs font-medium text-tertiary">
               42 Problems
             </div>
-          </div>
+          </div> */}
         </div>
       </section>
     </main>

@@ -160,7 +160,7 @@ export default function LoginPage() {
                 </span>
               </div>
               <span className="font-headline font-bold text-lg tracking-widest uppercase text-on-surface">
-                Obsidian Architect
+                Caner Karaman
               </span>
             </Link>
             <h2 className="font-headline text-3xl font-bold tracking-tight text-on-surface">
@@ -256,7 +256,7 @@ export default function LoginPage() {
                   <input
                     className="w-full pl-11 pr-4 py-3.5 bg-surface-container-lowest text-on-surface font-body rounded-xl border border-outline-variant/15 outline-none transition-all duration-200 focus:border-primary focus:ring-[4px] focus:ring-primary/20 placeholder:text-outline-variant/50 hover:border-outline-variant/30"
                     id="email"
-                    placeholder="developer@obsidian.com"
+                    placeholder="developer@canerkaraman.com"
                     type="email"
                     {...register("email")}
                   />
