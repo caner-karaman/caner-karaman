@@ -25,7 +25,7 @@ export default function TopNavBar() {
           <div className="hidden md:flex gap-6">
             <Link
               className="text-zinc-400 font-medium hover:text-zinc-100 hover:bg-white/5 transition-all duration-200 px-3 py-1 rounded-md"
-              href="/practice"
+              href="/problems"
             >
               Problems
             </Link>

@@ -1,4 +1,14 @@
-export default function ProblemViewPage() {
+export default async function ProblemViewPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const title = slug
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
+
   return (
     <main className="flex-1 flex w-full overflow-hidden p-2 gap-2 bg-background">
       {/* Left Panel: Problem Description */}
@@ -48,7 +58,7 @@ export default function ProblemViewPage() {
           {/* Problem Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-on-surface tracking-[-0.02em] mb-3">
-              1. Two Sum
+              {title}
             </h1>
             <div className="flex items-center gap-3 text-sm">
               <span className="px-2.5 py-1 bg-secondary/10 text-secondary rounded-md font-medium">
@@ -298,8 +308,17 @@ export default function ProblemViewPage() {
               <br />
               {"    "}
               <span className="text-primary-fixed-dim">def</span>{" "}
-              <span className="text-secondary-fixed-dim">twoSum</span>(
-              <span className="text-outline">self</span>,{" "}
+              <span className="text-secondary-fixed-dim">
+                {slug
+                  .split("-")
+                  .map((word, index) =>
+                    index === 0
+                      ? word
+                      : word.charAt(0).toUpperCase() + word.slice(1),
+                  )
+                  .join("")}
+              </span>
+              (<span className="text-outline">self</span>,{" "}
               <span className="text-on-surface">nums</span>:{" "}
               <span className="text-primary-fixed-dim">List</span>[
               <span className="text-primary-fixed-dim">int</span>],{" "}

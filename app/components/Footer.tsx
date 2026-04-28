@@ -14,7 +14,7 @@ export default function Footer() {
             </p>
           </div>
           <Link
-            href="/practice"
+            href="/problems"
             className="bg-primary text-on-primary px-6 py-3 rounded-md font-semibold hover:bg-primary-container transition-colors inline-block"
           >
             Start solving problems today

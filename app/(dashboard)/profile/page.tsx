@@ -8,7 +8,7 @@ export default function ProfilePage() {
       {/* TopAppBar Context (Simulated Desktop Top row) */}
       <div className="hidden md:flex justify-between items-center w-full mb-4">
         <div className="flex gap-6 font-sans tracking-tight text-sm">
-          <Link href="/practice" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95">Practice</Link>
+          <Link href="/problems" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95">Problems</Link>
           <Link href="#" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95">Assessments</Link>
           <Link href="/courses" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95">Curriculum</Link>
           <Link href="#" className="text-on-surface-variant hover:text-primary transition-colors duration-200 cursor-pointer active:scale-95">Community</Link>

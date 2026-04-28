@@ -54,17 +54,17 @@ export default function SideNavBar() {
           </span>
           <span>Overview</span>
         </Link>
-        <Link className={getLinkClasses("/practice")} href="/practice">
+        <Link className={getLinkClasses("/problems")} href="/problems">
           <span
             className="material-symbols-outlined transition-colors"
             style={{
               fontVariationSettings:
-                pathname === "/practice" ? "'FILL' 1" : "'FILL' 0",
+                pathname === "/problems" ? "'FILL' 1" : "'FILL' 0",
             }}
           >
             code
           </span>
-          <span>Practice</span>
+          <span>Problems</span>
         </Link>
       </div>
 

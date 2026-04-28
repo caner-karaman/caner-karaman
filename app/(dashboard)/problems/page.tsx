@@ -193,7 +193,7 @@ export default function PracticeProblemsPage() {
       <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
         <div className="space-y-4">
           <h1 className="text-3xl lg:text-5xl font-headline tracking-[-0.02em] font-bold text-on-surface">
-            Practice Problems
+            Problems
           </h1>
           <p className="text-on-surface-variant text-sm max-w-2xl leading-relaxed">
             Master algorithms and data structures through our curated problem
