@@ -2,9 +2,10 @@
 
 import Link from "next/link";
 import { useEffect, useState, useCallback, useRef } from "react";
-import { PublicProblemResourceService } from "@/services/api/services/PublicProblemResourceService";
 import { PublicUserProblemResourceService } from "@/services/api/services/PublicUserProblemResourceService";
 import { PublicTagResourceService } from "@/services/api/services/PublicTagResourceService";
+import { OpenAPI } from "@/services/api/core/OpenAPI";
+import { getHeaders } from "@/services/api/core/request";
 import type { ProblemListDTO } from "@/services/api/models/ProblemListDTO";
 import type { TagListDTO } from "@/services/api/models/TagListDTO";
 
@@ -29,25 +30,14 @@ export default function PracticeProblemsPage() {
   const [error, setError] = useState<string | null>(null);
   const [page, setPage] = useState(0);
   const [totalCount, setTotalCount] = useState(0);
-  const [search, setSearch] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [difficulty, setDifficulty] = useState<string>("");
   const [tags, setTags] = useState<TagListDTO[]>([]);
   const [selectedTagId, setSelectedTagId] = useState<string>("");
   const [pageSize, setPageSize] = useState(PAGE_SIZE);
-  const abortRef = useRef<AbortController | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
 
   const totalPages = Math.max(1, Math.ceil(totalCount / pageSize));
-
-  // Debounce search input
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setDebouncedSearch(search);
-      setPage(0);
-      setTotalCount(0);
-    }, DEBOUNCE_MS);
-    return () => clearTimeout(timer);
-  }, [search]);
 
   // Fetch tags on mount
   useEffect(() => {
@@ -60,55 +50,67 @@ export default function PracticeProblemsPage() {
       });
   }, []);
 
-  const fetchProblems = useCallback(async () => {
-    // Cancel any in-flight request
-    abortRef.current?.abort();
-    const controller = new AbortController();
-    abortRef.current = controller;
-
-    try {
-      // Defer state updates to the next microtask to avoid cascading render warnings
-      await Promise.resolve();
-      setLoading(true);
-      setError(null);
-
-      const data = await PublicProblemResourceService.getAllProblems(
-        "en",
-        debouncedSearch.trim() || undefined,
-        (difficulty as "EASY" | "MEDIUM" | "HARD") || undefined,
-        selectedTagId ? [Number(selectedTagId)] : undefined,
-        page,
-        pageSize,
-        ["id,asc"],
-      );
-
-      // Skip if this request was superseded
-      if (controller.signal.aborted) return;
-
-      setProblems(data);
-      if (data.length < pageSize) {
-        setTotalCount(page * pageSize + data.length);
-      } else {
-        setTotalCount((prev) =>
-          prev <= page * pageSize ? (page + 2) * pageSize : prev,
-        );
-      }
-    } catch (err) {
-      if (controller.signal.aborted) return;
-      console.error("Failed to fetch problems:", err);
-      setError("Failed to load problems. Please try again.");
-      setProblems([]);
-    } finally {
-      if (!controller.signal.aborted) {
-        setLoading(false);
-      }
-    }
-  }, [page, pageSize, debouncedSearch, difficulty, selectedTagId]);
-
   useEffect(() => {
-    fetchProblems();
-    return () => abortRef.current?.abort();
-  }, [fetchProblems]);
+    const controller = new AbortController();
+    let active = true;
+
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+
+        const urlObj = new URL(`${OpenAPI.BASE}/api/public/problems`);
+        urlObj.searchParams.append("lang", "en");
+        urlObj.searchParams.append("page", page.toString());
+        urlObj.searchParams.append("size", pageSize.toString());
+        urlObj.searchParams.append("sort", "id,asc");
+
+        if (difficulty) urlObj.searchParams.append("difficulty", difficulty);
+        if (selectedTagId) urlObj.searchParams.append("tagIds", selectedTagId);
+
+        const headers = await getHeaders(OpenAPI, {
+          method: "GET",
+          url: "/api/public/problems",
+        });
+
+        const response = await fetch(urlObj.toString(), {
+          method: "GET",
+          headers,
+          signal: controller.signal,
+        });
+
+        if (!response.ok) throw new Error("Failed to fetch problems");
+
+        const totalCountHeader = response.headers.get("x-total-count");
+        const fetchedTotalCount = totalCountHeader
+          ? parseInt(totalCountHeader, 10)
+          : 0;
+        const data: ProblemListDTO[] = await response.json();
+
+        // Skip if this request was superseded
+        if (!active || controller.signal.aborted) return;
+
+        setProblems(data);
+        setTotalCount(fetchedTotalCount);
+      } catch (err) {
+        if (!active || controller.signal.aborted) return;
+        console.error("Failed to fetch problems:", err);
+        setError("Failed to load problems. Please try again.");
+        setProblems([]);
+      } finally {
+        if (active && !controller.signal.aborted) {
+          setLoading(false);
+        }
+      }
+    };
+
+    loadData();
+
+    return () => {
+      active = false;
+      controller.abort();
+    };
+  }, [page, pageSize, debouncedSearch, difficulty, selectedTagId, retryCount]);
 
   // Difficulty change resets page immediately (no debounce needed)
   const handleDifficultyChange = (value: string) => {
@@ -279,7 +281,7 @@ export default function PracticeProblemsPage() {
                         {error}
                       </span>
                       <button
-                        onClick={fetchProblems}
+                        onClick={() => setRetryCount((c) => c + 1)}
                         className="mt-2 px-4 py-1.5 rounded-md bg-primary/10 text-primary text-sm font-medium hover:bg-primary/20 transition-colors"
                       >
                         Retry

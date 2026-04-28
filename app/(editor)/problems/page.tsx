@@ -108,7 +108,9 @@ export default function ProblemViewPage() {
           <div className="space-y-6 mb-8">
             {/* Example 1 */}
             <div>
-              <p className="font-bold text-on-surface text-sm mb-2">Example 1:</p>
+              <p className="font-bold text-on-surface text-sm mb-2">
+                Example 1:
+              </p>
               <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-md p-4 font-mono text-sm">
                 <div className="flex mb-1">
                   <span className="text-outline w-24">Input:</span>{" "}
@@ -131,11 +133,15 @@ export default function ProblemViewPage() {
 
             {/* Example 2 */}
             <div>
-              <p className="font-bold text-on-surface text-sm mb-2">Example 2:</p>
+              <p className="font-bold text-on-surface text-sm mb-2">
+                Example 2:
+              </p>
               <div className="bg-surface-container-lowest border border-outline-variant/15 rounded-md p-4 font-mono text-sm">
                 <div className="flex mb-1">
                   <span className="text-outline w-24">Input:</span>{" "}
-                  <span className="text-on-surface">nums = [3,2,4], target = 6</span>
+                  <span className="text-on-surface">
+                    nums = [3,2,4], target = 6
+                  </span>
                 </div>
                 <div className="flex">
                   <span className="text-outline w-24">Output:</span>{" "}
@@ -147,7 +153,9 @@ export default function ProblemViewPage() {
 
           {/* Constraints */}
           <div className="mb-8">
-            <p className="font-bold text-on-surface text-sm mb-3">Constraints:</p>
+            <p className="font-bold text-on-surface text-sm mb-3">
+              Constraints:
+            </p>
             <ul className="list-disc list-inside text-sm text-on-surface-variant space-y-1.5 font-mono">
               <li>
                 <code className="bg-surface-container-highest px-1.5 py-0.5 rounded text-primary-fixed-dim">
