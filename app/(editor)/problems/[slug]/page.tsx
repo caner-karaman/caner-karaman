@@ -24,33 +24,6 @@ export default async function ProblemViewPage({
             </span>
             Description
           </button>
-          <button className="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-medium text-sm pb-1 transition-colors">
-            <span
-              className="material-symbols-outlined text-[18px]"
-              style={{ fontVariationSettings: "'FILL' 0" }}
-            >
-              forum
-            </span>
-            Editorial
-          </button>
-          <button className="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-medium text-sm pb-1 transition-colors">
-            <span
-              className="material-symbols-outlined text-[18px]"
-              style={{ fontVariationSettings: "'FILL' 0" }}
-            >
-              science
-            </span>
-            Solutions
-          </button>
-          <button className="flex items-center gap-2 text-on-surface-variant hover:text-on-surface font-medium text-sm pb-1 transition-colors">
-            <span
-              className="material-symbols-outlined text-[18px]"
-              style={{ fontVariationSettings: "'FILL' 0" }}
-            >
-              history
-            </span>
-            Submissions
-          </button>
         </div>
 
         {/* Problem Content Scrollable Area */}
@@ -64,32 +37,6 @@ export default async function ProblemViewPage({
               <span className="px-2.5 py-1 bg-secondary/10 text-secondary rounded-md font-medium">
                 Easy
               </span>
-              <button className="flex items-center gap-1 text-on-surface-variant hover:text-primary transition-colors">
-                <span
-                  className="material-symbols-outlined text-[16px]"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  thumb_up
-                </span>
-                <span>54.2K</span>
-              </button>
-              <button className="flex items-center gap-1 text-on-surface-variant hover:text-error transition-colors">
-                <span
-                  className="material-symbols-outlined text-[16px]"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  thumb_down
-                </span>
-                <span>1.8K</span>
-              </button>
-              <button className="flex items-center gap-1 text-on-surface-variant hover:text-tertiary-fixed-dim transition-colors ml-auto">
-                <span
-                  className="material-symbols-outlined text-[16px]"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  star
-                </span>
-              </button>
             </div>
           </div>
 
@@ -201,47 +148,6 @@ export default async function ProblemViewPage({
                 time complexity?
               </span>
             </p>
-          </div>
-
-          {/* Accordions (Hints) */}
-          <div className="mt-8 space-y-2">
-            <details className="group bg-surface-container-lowest rounded-md border border-outline-variant/10 cursor-pointer">
-              <summary className="flex justify-between items-center font-medium p-3 text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
-                <span>Hint 1</span>
-                <span
-                  className="material-symbols-outlined transition duration-300 group-open:-rotate-180"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  expand_more
-                </span>
-              </summary>
-              <div className="text-on-surface-variant text-sm px-4 pb-4 leading-relaxed">
-                A really brute force way would be to search for all possible
-                pairs of numbers but that would be too slow. Again, it's best to
-                try out brute force solutions for just for completeness. It is
-                from these brute force solutions that you can come up with
-                optimizations.
-              </div>
-            </details>
-
-            <details className="group bg-surface-container-lowest rounded-md border border-outline-variant/10 cursor-pointer">
-              <summary className="flex justify-between items-center font-medium p-3 text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors">
-                <span>Hint 2</span>
-                <span
-                  className="material-symbols-outlined transition duration-300 group-open:-rotate-180"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  expand_more
-                </span>
-              </summary>
-              <div className="text-on-surface-variant text-sm px-4 pb-4 leading-relaxed">
-                So, if we fix one of the numbers, say <code>x</code>, we have to
-                scan the entire array to find the next number <code>y</code>{" "}
-                which is <code>value - x</code> where value is the input
-                parameter. Can we change our array keeping so that this search
-                becomes faster?
-              </div>
-            </details>
           </div>
         </div>
       </section>
