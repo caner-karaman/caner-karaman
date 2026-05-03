@@ -29,6 +29,13 @@ function sanitizeHtml(html: string): string {
   return html.replace(/\s*style="[^"]*"/gi, "");
 }
 
+function getYouTubeId(url: string | null | undefined): string | null {
+  if (!url) return null;
+  const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+  const match = url.match(regExp);
+  return (match && match[2].length === 11) ? match[2] : null;
+}
+
 /* ── Component ────────────────────────────────────────────────── */
 
 export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
@@ -224,86 +231,117 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
         )}
       </section>
 
-      {/* Right Panel: Solution Code */}
+      {/* Right Panel: Solution Content */}
       <section
-        className={`flex flex-col gap-2 transition-all duration-500 ease-in-out overflow-hidden ${
-          showSolution ? "flex-1 w-1/2 opacity-100" : "w-0 opacity-0 p-0 gap-0"
+        className={`flex flex-col bg-surface-container-low rounded-lg overflow-hidden border border-outline-variant/10 transition-all duration-500 ease-in-out ${
+          showSolution ? "flex-1 w-1/2 opacity-100" : "w-0 opacity-0 p-0 border-none"
         }`}
       >
-        {/* Code Area */}
-        <div className="flex-1 bg-surface-container-lowest rounded-lg border border-outline-variant/10 flex flex-col overflow-hidden relative">
-          {/* Toolbar */}
-          <div className="flex items-center justify-between px-3 py-2 bg-surface-container-low border-b border-outline-variant/15">
-            <div className="flex items-center gap-1">
-              {/* Language tabs */}
-              {solutions.map((sol, idx) => (
-                <button
-                  key={sol.id ?? idx}
-                  onClick={() => setSelectedSolutionIndex(idx)}
-                  className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors border ${
-                    idx === selectedSolutionIndex
-                      ? "bg-surface-container-high text-on-surface border-outline-variant/20"
-                      : "text-on-surface-variant hover:text-on-surface border-transparent hover:bg-surface-container-high/50"
-                  }`}
-                >
-                  {sol.programmingLanguage ?? `Solution ${idx + 1}`}
-                </button>
-              ))}
-            </div>
-            <div className="flex items-center gap-2">
+        {/* Header / Tabs */}
+        <div className="flex items-center justify-between px-3 py-2 bg-surface-container-lowest border-b border-outline-variant/15 shrink-0">
+          <div className="flex items-center gap-1">
+            {solutions.map((sol, idx) => (
               <button
-                onClick={() => setShowSolution(false)}
-                className="text-on-surface-variant hover:text-on-surface p-1 transition-colors"
-                title="Hide Solution"
+                key={sol.id ?? idx}
+                onClick={() => setSelectedSolutionIndex(idx)}
+                className={`flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-medium transition-colors border ${
+                  idx === selectedSolutionIndex
+                    ? "bg-surface-container-high text-on-surface border-outline-variant/20"
+                    : "text-on-surface-variant hover:text-on-surface border-transparent hover:bg-surface-container-high/50"
+                }`}
               >
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  close
-                </span>
+                {sol.programmingLanguage ?? `Solution ${idx + 1}`}
               </button>
-            </div>
+            ))}
           </div>
-
-          {/* Code Display */}
-          <div className="flex-1 bg-[#0e0e0e] flex relative font-mono text-sm p-4 overflow-auto shadow-[0_0_10px_rgba(173,198,255,0.05)]">
-            {/* Line Numbers */}
-            <div className="flex flex-col text-outline-variant text-right pr-4 select-none shrink-0">
-              {codeLines.map((_, i) => (
-                <span key={i}>{i + 1}</span>
-              ))}
-            </div>
-
-            {/* Code Content */}
-            <pre className="flex-1 text-on-surface whitespace-pre overflow-x-auto">
-              <code>{activeSolution?.code ?? "// No code available"}</code>
-            </pre>
-          </div>
+          <button
+            onClick={() => setShowSolution(false)}
+            className="text-on-surface-variant hover:text-on-surface p-1 transition-colors"
+            title="Hide Solution"
+          >
+            <span
+              className="material-symbols-outlined text-[18px]"
+              style={{ fontVariationSettings: "'FILL' 0" }}
+            >
+              close
+            </span>
+          </button>
         </div>
 
-        {/* Explanation Panel */}
-        {activeSolution?.explanation && (
-          <div className="h-64 bg-surface-container-low rounded-lg border border-outline-variant/10 flex flex-col overflow-hidden">
-            <div className="flex items-center px-4 py-2 bg-surface-container-lowest border-b border-outline-variant/15">
-              <div className="flex items-center gap-2 text-primary font-medium text-sm">
-                <span
-                  className="material-symbols-outlined text-[18px]"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  lightbulb
-                </span>
-                Explanation
-              </div>
+        {/* Scrollable Body */}
+        <div className="flex-1 overflow-y-auto">
+          {/* Video Area */}
+          {activeSolution && getYouTubeId(activeSolution.videoUrl) && (
+            <div className="aspect-video w-full bg-black">
+              <iframe
+                width="100%"
+                height="100%"
+                src={`https://www.youtube.com/embed/${getYouTubeId(activeSolution.videoUrl)}`}
+                title="YouTube video player"
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
             </div>
-            <div
-              className="problem-description flex-1 overflow-y-auto p-4"
-              dangerouslySetInnerHTML={{
-                __html: sanitizeHtml(activeSolution.explanation),
-              }}
-            />
+          )}
+
+          <div className="p-6 space-y-8">
+            {/* Explanation Area */}
+            {activeSolution?.explanation && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-primary font-medium text-sm">
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    style={{ fontVariationSettings: "'FILL' 0" }}
+                  >
+                    lightbulb
+                  </span>
+                  Explanation
+                </div>
+                <div
+                  className="problem-description"
+                  dangerouslySetInnerHTML={{
+                    __html: sanitizeHtml(activeSolution.explanation),
+                  }}
+                />
+              </div>
+            )}
+
+            {/* Code Area */}
+            {activeSolution?.code && (
+              <div className="space-y-4">
+                <div className="flex items-center gap-2 text-primary font-medium text-sm">
+                  <span
+                    className="material-symbols-outlined text-[18px]"
+                    style={{ fontVariationSettings: "'FILL' 0" }}
+                  >
+                    code
+                  </span>
+                  Code Implementation
+                </div>
+                <div className="bg-[#0e0e0e] rounded-xl border border-outline-variant/10 flex relative font-mono text-sm p-4 overflow-hidden shadow-inner">
+                  {/* Line Numbers */}
+                  <div className="flex flex-col text-outline-variant/40 text-right pr-4 select-none shrink-0 border-r border-outline-variant/5">
+                    {codeLines.map((_, i) => (
+                      <span key={i}>{i + 1}</span>
+                    ))}
+                  </div>
+
+                  {/* Code Content */}
+                  <pre className="flex-1 text-on-surface whitespace-pre pl-4 overflow-x-auto">
+                    <code>{activeSolution.code}</code>
+                  </pre>
+                </div>
+              </div>
+            )}
+
+            {!activeSolution && (
+              <div className="text-center py-12 text-on-surface-variant">
+                No solution available for this language.
+              </div>
+            )}
           </div>
-        )}
+        </div>
       </section>
     </main>
   );
