@@ -61,10 +61,12 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
 
   /* ── Derived values ──────────────────────────────────────── */
 
-  const title = problem?.title ?? slug
-    .split("-")
-    .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-    .join(" ");
+  const title =
+    problem?.title ??
+    slug
+      .split("-")
+      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+      .join(" ");
 
   const difficulty = problem?.difficulty ?? "";
   const solutions: SolutionDTO[] = problem?.solutions ?? [];
@@ -147,7 +149,7 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
         </div>
 
         {/* Problem Content Scrollable Area */}
-        <div className="flex-1 overflow-y-auto p-6 pr-8">
+        <div className="flex-1 overflow-y-auto p-6 pr-8 pb-24">
           {/* Problem Header */}
           <div className="mb-6">
             <h1 className="text-2xl font-bold text-on-surface tracking-[-0.02em] mb-3">
@@ -176,7 +178,9 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
           {problem?.description && (
             <div
               className="problem-description mb-8"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(problem.description) }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(problem.description),
+              }}
             />
           )}
 
@@ -199,25 +203,25 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
               </a>
             </div>
           )}
-
-          {/* Show Solution Button */}
-          {!showSolution && solutions.length > 0 && (
-            <div className="mt-8 flex justify-center">
-              <button
-                onClick={() => setShowSolution(true)}
-                className="group flex items-center gap-2 bg-primary hover:bg-primary/90 text-on-primary px-6 py-3 rounded-lg font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-primary/20 active:scale-[0.98]"
-              >
-                <span
-                  className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5"
-                  style={{ fontVariationSettings: "'FILL' 0" }}
-                >
-                  code
-                </span>
-                Show Solution
-              </button>
-            </div>
-          )}
         </div>
+
+        {/* Show Solution — floating at the bottom */}
+        {!showSolution && solutions.length > 0 && (
+          <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-surface-container-low to-transparent pointer-events-none flex items-end justify-center pb-6">
+            <button
+              onClick={() => setShowSolution(true)}
+              className="pointer-events-auto group flex items-center gap-2 bg-primary hover:bg-primary/90 text-on-primary px-6 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-primary/20 active:scale-[0.98]"
+            >
+              <span
+                className="material-symbols-outlined text-[20px] transition-transform duration-200 group-hover:translate-x-0.5"
+                style={{ fontVariationSettings: "'FILL' 0" }}
+              >
+                code
+              </span>
+              Show Solution
+            </button>
+          </div>
+        )}
       </section>
 
       {/* Right Panel: Solution Code */}
@@ -294,7 +298,9 @@ export default function ProblemViewClient({ slug }: ProblemViewClientProps) {
             </div>
             <div
               className="problem-description flex-1 overflow-y-auto p-4"
-              dangerouslySetInnerHTML={{ __html: sanitizeHtml(activeSolution.explanation) }}
+              dangerouslySetInnerHTML={{
+                __html: sanitizeHtml(activeSolution.explanation),
+              }}
             />
           </div>
         )}
