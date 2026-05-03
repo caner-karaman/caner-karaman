@@ -540,6 +540,45 @@
                 }
             }
         },
+        "/api/public/problems/{slug}": {
+            "get": {
+                "tags": [
+                    "public-problem-resource"
+                ],
+                "operationId": "getProblemBySlug",
+                "parameters": [
+                    {
+                        "name": "slug",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "lang",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "default": "tr"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "*/*": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/ProblemDetailDTO"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/api/public/posts": {
             "get": {
                 "tags": [
@@ -1222,6 +1261,72 @@
                 "required": [
                     "website"
                 ]
+            },
+            "ProblemDetailDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "difficulty": {
+                        "type": "string",
+                        "enum": [
+                            "EASY",
+                            "MEDIUM",
+                            "HARD"
+                        ]
+                    },
+                    "leetcodeUrl": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "description": {
+                        "type": "string"
+                    },
+                    "languageCode": {
+                        "type": "string"
+                    },
+                    "tags": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/TagDTO"
+                        },
+                        "uniqueItems": true
+                    },
+                    "solutions": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/SolutionDTO"
+                        }
+                    }
+                }
+            },
+            "SolutionDTO": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "programmingLanguage": {
+                        "type": "string"
+                    },
+                    "videoUrl": {
+                        "type": "string"
+                    },
+                    "code": {
+                        "type": "string"
+                    },
+                    "explanation": {
+                        "type": "string"
+                    }
+                }
             },
             "PostTranslationDTO": {
                 "type": "object",

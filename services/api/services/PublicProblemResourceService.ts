@@ -2,6 +2,7 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
+import type { ProblemDetailDTO } from '../models/ProblemDetailDTO';
 import type { ProblemListDTO } from '../models/ProblemListDTO';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import { OpenAPI } from '../core/OpenAPI';
@@ -38,6 +39,27 @@ export class PublicProblemResourceService {
                 'page': page,
                 'size': size,
                 'sort': sort,
+            },
+        });
+    }
+    /**
+     * @param slug
+     * @param lang
+     * @returns ProblemDetailDTO OK
+     * @throws ApiError
+     */
+    public static getProblemBySlug(
+        slug: string,
+        lang: string = 'tr',
+    ): CancelablePromise<ProblemDetailDTO> {
+        return __request(OpenAPI, {
+            method: 'GET',
+            url: '/api/public/problems/{slug}',
+            path: {
+                'slug': slug,
+            },
+            query: {
+                'lang': lang,
             },
         });
     }

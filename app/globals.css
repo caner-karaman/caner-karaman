@@ -56,3 +56,155 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+/* ── Problem description: consistent styling for backend HTML ── */
+
+.problem-description {
+  font-size: 0.875rem;
+  line-height: 1.6;
+  color: var(--color-on-surface-variant);
+}
+
+/* ── Typography ── */
+
+.problem-description p {
+  margin-bottom: 1rem;
+}
+
+.problem-description strong,
+.problem-description b {
+  color: var(--color-on-surface);
+  font-weight: 600;
+}
+
+.problem-description em,
+.problem-description i {
+  font-style: italic;
+}
+
+.problem-description a {
+  color: var(--color-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.problem-description a:hover {
+  opacity: 0.8;
+}
+
+/* ── Inline code ── */
+
+.problem-description code {
+  background-color: var(--color-surface-container-highest);
+  color: var(--color-primary-fixed-dim);
+  padding: 0.125rem 0.375rem;
+  border-radius: 0.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  font-size: 0.8125rem;
+}
+
+/* ── Code blocks (pre > code) ── */
+
+.problem-description pre {
+  background-color: var(--color-surface-container-lowest);
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 15%, transparent);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+}
+
+.problem-description pre code {
+  background-color: transparent;
+  padding: 0;
+  border-radius: 0;
+  font-size: 0.8125rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
+  color: var(--color-on-surface);
+}
+
+/* ── Lists ── */
+
+.problem-description ul {
+  list-style-type: disc;
+  list-style-position: inside;
+  margin-bottom: 1rem;
+}
+
+.problem-description ol {
+  list-style-type: decimal;
+  list-style-position: inside;
+  margin-bottom: 1rem;
+}
+
+.problem-description li {
+  margin-bottom: 0.375rem;
+}
+
+.problem-description li code {
+  font-size: 0.8125rem;
+}
+
+/* ── Superscript / subscript ── */
+
+.problem-description sup {
+  font-size: 0.7em;
+  vertical-align: super;
+}
+
+.problem-description sub {
+  font-size: 0.7em;
+  vertical-align: sub;
+}
+
+/* ── Headings inside description ── */
+
+.problem-description h1,
+.problem-description h2,
+.problem-description h3,
+.problem-description h4 {
+  color: var(--color-on-surface);
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+/* ── Horizontal rules ── */
+
+.problem-description hr {
+  border: none;
+  border-top: 1px solid color-mix(in srgb, var(--color-outline-variant) 15%, transparent);
+  margin: 1.5rem 0;
+}
+
+/* ── Tables ── */
+
+.problem-description table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+}
+
+.problem-description th,
+.problem-description td {
+  border: 1px solid color-mix(in srgb, var(--color-outline-variant) 20%, transparent);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+}
+
+.problem-description th {
+  background-color: var(--color-surface-container-high);
+  color: var(--color-on-surface);
+  font-weight: 600;
+}
+
+/* ── Images ── */
+
+.problem-description img {
+  max-width: 100%;
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
